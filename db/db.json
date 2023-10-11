@@ -1,0 +1,24 @@
+{
+    "conversions": [
+        {
+            "id": 1,
+            "list_number": 1,
+            "currency_from": "USD",
+            "currency_to": "PHP",
+            "value": 166.66,
+            "rate": 56.5,
+            "date_converted": "October 11, 2023",
+            "note": "My salary per month"
+        },
+        {
+            "id": 2,
+            "list_number": 2,
+            "value": 8,
+            "currency_from": "USD",
+            "currency_to": "PHP",
+            "rate": 56.5,
+            "date_converted": "October 11, 2023",
+            "note": "My salary per day"
+        }
+    ]
+}
