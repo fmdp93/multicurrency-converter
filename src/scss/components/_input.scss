@@ -1,0 +1,23 @@
+input[type='text'] {
+    padding: 1.5rem;
+    font-size: 2.8rem;
+    border: 1px solid $primary-2;
+    outline: none;
+    border-radius: 1rem;
+    color: $text-primary;
+    &:focus {
+        outline: 3px solid #333;
+    }
+}
+
+select {
+    padding: 1.5rem;
+    font-size: 2.8rem;
+    border: 1px solid #283618;
+    outline: none;
+    border-radius: 1rem;
+    color: #212529;
+    &:focus {
+        outline: 3px solid #333;
+    }
+}

@@ -1,0 +1,43 @@
+@import "variable.scss";
+
+@import "components/text.scss";
+@import "components/input.scss";
+
+@import "scope/home.scss";
+
+:root {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+html, body{
+    margin: 0;
+    padding: 0;    
+}
+
+body {
+    font-size: 1.6rem;;
+    background: $tertiary;
+}
+
+.app{
+    margin: 0 auto;
+}
+
+nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2rem;
+    text-transform: uppercase;
+    background-color: $primary;
+    color: $secondary;
+}
+
+.content {
+    padding: 5rem;
+}
