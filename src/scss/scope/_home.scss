@@ -8,4 +8,11 @@
     .converter {
         width: 60rem;
     }
+    .row-input {
+        display: flex;
+        justify-content: space-between;
+        :first-child {
+            width: 100%;
+        }
+    }
 }
