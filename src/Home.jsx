@@ -11,10 +11,7 @@ const Home = () => {
     const [rates, setRates] = useState(null);
     const [baseCurrency, setBaseCurrency] = useState(0);
     const [baseAmount, setBaseAmount] = useState("");
-    const defaultCurrencies = [
-        MAIN_CURRENCY,
-        SECONDARY_CURRENCY,
-    ];
+    const defaultCurrencies = [MAIN_CURRENCY, SECONDARY_CURRENCY];
 
     const [inputSize, setInputSize] = useState(2);
     const [conversionInputsList, setConversionInputsList] = useState(null);
@@ -47,22 +44,27 @@ const Home = () => {
     };
 
     useEffect(() => {
-        if (rates) {            
+        if (rates) {
             setConversionInputsList(getInputs(inputSize));
         }
-        // console.log(optionRefs);        
+        // console.log(optionRefs);
     }, [rates, inputSize, baseAmount]);
 
     return (
         <div className="page-home">
             <h1>Convert</h1>
-            {conversionInputsList && conversionInputsList.map((input) => input)}
-            <button onClick={handleAddCurrency}>Add Currency</button>
-            <Rates
-                rates={rates}
-                inputRef={optionAddCurrency}
-                setBaseCurrency={setBaseCurrency}
-            ></Rates>
+            <div className="converter">
+                {conversionInputsList &&
+                    conversionInputsList.map((input) => input)}
+                <div className="row-input">
+                    <button onClick={handleAddCurrency}>Add Currency</button>
+                    <Rates
+                        rates={rates}
+                        inputRef={optionAddCurrency}
+                        setBaseCurrency={setBaseCurrency}
+                    ></Rates>
+                </div>
+            </div>
         </div>
     );
 };
