@@ -1,18 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import Rates from "./Rates";
 import { ratesToday } from "../../db/money";
+import { ConverterContext } from "../Home";
 
-const BASE_CURRENCY = 'EUR';
+const BASE_CURRENCY = "EUR";
 
-const ConversionInputs = ({
-    arrayKey,
-    rates,
-    baseCurrency,
-    setBaseCurrency,
-    baseAmount,
-    setBaseAmount,
-    defaultCurrency,
-}) => {
+const ConversionInputs = ({ arrayKey, defaultCurrency }) => {
+    const { rates, baseCurrency, setBaseCurrency, baseAmount, setBaseAmount } =
+        useContext(ConverterContext);
     const [amount, setAmount] = useState("");
     const amountRef = useRef("");
     const currencyRef = useRef("");
@@ -20,33 +15,37 @@ const ConversionInputs = ({
 
     const handleChange = (amount) => {
         // trigger effect
-        console.log(arrayKey);
+        // console.log(arrayKey);
         setAmount(amount);
         setBaseAmount(amount);
         setBaseCurrency(currencyRef.current.value);
     };
 
     useEffect(() => {
-        console.log(arrayKey);        
+        // console.log(arrayKey);
         let baseRate = ratesToday.rates[baseCurrency];
         let targetRate = ratesToday.rates[currencyRef.current.value];
 
-        if(baseCurrency === BASE_CURRENCY){ 
-            convertedAmount = baseAmount * targetRate ;
-        }else if(baseCurrency !== BASE_CURRENCY && currencyRef.current.value === BASE_CURRENCY){
+        if (baseCurrency === BASE_CURRENCY) {
+            convertedAmount = baseAmount * targetRate;
+        } else if (
+            baseCurrency !== BASE_CURRENCY &&
+            currencyRef.current.value === BASE_CURRENCY
+        ) {
             convertedAmount = baseAmount / baseRate;
-        }else{
+        } else {
             // back to EUR
             convertedAmount = baseAmount / baseRate;
 
             // now it's EUR, EUR to USD
             convertedAmount = convertedAmount * targetRate;
-        }        
+        }
 
-        if(currencyRef.current.value !== baseCurrency){
+        if (currencyRef.current.value !== baseCurrency) {
             setAmount(convertedAmount || "");
         }
-    }, [baseAmount]);
+        console.log(baseCurrency);
+    }, [baseAmount, baseCurrency]);
 
     return (
         <div className="row-input">
