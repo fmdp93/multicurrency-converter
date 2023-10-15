@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useContext, createContext } from "react";
 import ConversionInputs from "./components/Input";
-import { Converter } from "./helpers/Converter";
 import useMoneyApi from "./hooks/useMoneyApi";
 import Rates from "./components/Rates";
 
