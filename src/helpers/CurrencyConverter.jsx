@@ -10,19 +10,19 @@ export class CurrencyConverter {
 
     convertNow() {
         let convertedAmount = 0;
-        if ((convertedAmount = this.baseCurrencyToTargetCurrency()) !== undefined)
+        if ((convertedAmount = this.baseToTarget()) !== undefined)
             return convertedAmount;
 
-        if ((convertedAmount = this.targetCurrencyToBaseCurrency()) !== undefined)
+        if ((convertedAmount = this.targetToBase()) !== undefined)
             return convertedAmount;     
     }
 
-    baseCurrencyToTargetCurrency() {
+    baseToTarget() {
         if (this.currency === this.baseCurrency)
             return this.amount * this.targetRate;
     }
 
-    targetCurrencyToBaseCurrency(targetCurrency) {
+    targetToBase(targetCurrency) {
         if (
             this.currency !== this.baseCurrency &&
             targetCurrency === this.baseCurrency
