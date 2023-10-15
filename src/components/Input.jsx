@@ -26,13 +26,7 @@ const ConversionInputs = ({ arrayKey, defaultCurrency }) => {
         // console.log(arrayKey);
         let baseRate = ratesToday.rates[baseCurrency];
         let targetRate = ratesToday.rates[currencyRef.current.value];
-
         
-        // back to EUR
-        convertedAmount = baseAmount / baseRate;
-        
-        // now it's EUR, EUR to USD
-        convertedAmount = convertedAmount * targetRate;
         const currencyConverter = new CurrencyConverter(
             baseCurrency,
             baseAmount,

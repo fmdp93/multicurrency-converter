@@ -6,16 +6,18 @@ export class CurrencyConverter {
         this.amount = amount;
         this.rate = rate;
         this.targetRate = targetRate;
-        this.targetCurrency = targetCurrency
+        this.targetCurrency = targetCurrency;
     }
 
     getConversion() {
-        let convertedAmount = 0;
+        let convertedAmount;
         if ((convertedAmount = this.baseToTarget()) !== undefined)
             return convertedAmount;
 
         if ((convertedAmount = this.targetToBase()) !== undefined)
-            return convertedAmount;     
+            return convertedAmount;
+
+        return this.targetToTarget();
     }
 
     baseToTarget() {
@@ -30,5 +32,10 @@ export class CurrencyConverter {
         ) {
             return this.amount / this.rate;
         }
+    }
+
+    targetToTarget() {
+        // target -> EUR -> target
+        return (this.amount / this.rate) * this.targetRate;
     }
 }
