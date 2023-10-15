@@ -18,7 +18,7 @@ export class CurrencyConverter {
             this.currency !== this.baseCurrency &&
             targetCurrency === this.baseCurrency
         ) {
-            return baseAmount / baseRate;
+            return this.amount / this.rate;
         }
     }
 }
