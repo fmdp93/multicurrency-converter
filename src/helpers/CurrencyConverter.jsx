@@ -1,11 +1,12 @@
 export class CurrencyConverter {
     baseCurrency = "EUR";
 
-    constructor(currency, amount, rate, targetRate) {
+    constructor(currency, amount, rate, targetRate, targetCurrency) {
         this.currency = currency;
         this.amount = amount;
         this.rate = rate;
         this.targetRate = targetRate;
+        this.targetCurrency = targetCurrency
     }
 
     getConversion() {
@@ -22,10 +23,10 @@ export class CurrencyConverter {
             return this.amount * this.targetRate;
     }
 
-    targetToBase(targetCurrency) {
+    targetToBase() {
         if (
             this.currency !== this.baseCurrency &&
-            targetCurrency === this.baseCurrency
+            this.targetCurrency === this.baseCurrency
         ) {
             return this.amount / this.rate;
         }
