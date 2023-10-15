@@ -8,7 +8,7 @@ export class CurrencyConverter {
         this.targetRate = targetRate;
     }
 
-    convertNow() {
+    getConversion() {
         let convertedAmount = 0;
         if ((convertedAmount = this.baseToTarget()) !== undefined)
             return convertedAmount;

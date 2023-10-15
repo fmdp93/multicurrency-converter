@@ -41,7 +41,7 @@ const ConversionInputs = ({ arrayKey, defaultCurrency }) => {
             currencyRef.current.value
         );
 
-        convertedAmount = currencyConverter.convertNow();
+        convertedAmount = currencyConverter.getConversion();
 
         if (currencyRef.current.value !== baseCurrency) {
             setAmount(convertedAmount || "");
