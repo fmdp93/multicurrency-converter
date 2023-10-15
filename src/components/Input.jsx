@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useContext } from "react";
 import Rates from "./Rates";
 import { ratesToday } from "../../db/money";
 import { ConverterContext } from "../Home";
+import { CurrencyConverter } from "../helpers/CurrencyConverter";
 
 const BASE_CURRENCY = "EUR";
 
@@ -26,25 +27,26 @@ const ConversionInputs = ({ arrayKey, defaultCurrency }) => {
         let baseRate = ratesToday.rates[baseCurrency];
         let targetRate = ratesToday.rates[currencyRef.current.value];
 
-        if (baseCurrency === BASE_CURRENCY) {
-            convertedAmount = baseAmount * targetRate;
-        } else if (
-            baseCurrency !== BASE_CURRENCY &&
-            currencyRef.current.value === BASE_CURRENCY
-        ) {
-            convertedAmount = baseAmount / baseRate;
-        } else {
-            // back to EUR
-            convertedAmount = baseAmount / baseRate;
+        
+        // back to EUR
+        convertedAmount = baseAmount / baseRate;
+        
+        // now it's EUR, EUR to USD
+        convertedAmount = convertedAmount * targetRate;
+        const currencyConverter = new CurrencyConverter(
+            baseCurrency,
+            baseAmount,
+            baseRate,
+            targetRate,
+            currencyRef.current.value
+        );
 
-            // now it's EUR, EUR to USD
-            convertedAmount = convertedAmount * targetRate;
-        }
+        convertedAmount = currencyConverter.convertNow();
 
         if (currencyRef.current.value !== baseCurrency) {
             setAmount(convertedAmount || "");
         }
-        console.log(baseCurrency);
+        // console.log(baseCurrency);
     }, [baseAmount, baseCurrency]);
 
     return (
