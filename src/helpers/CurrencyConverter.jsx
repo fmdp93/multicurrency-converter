@@ -7,10 +7,18 @@ export class CurrencyConverter {
         this.rate = rate;
         this.targetRate = targetRate;
     }
+
     baseCurrencyToTargetCurrency() {
         if (this.currency === this.baseCurrency)
             return this.amount * this.targetRate;
     }
 
-
+    targetCurrencyToBaseCurrency(targetCurrency) {
+        if (
+            this.currency !== this.baseCurrency &&
+            targetCurrency === this.baseCurrency
+        ) {
+            return baseAmount / baseRate;
+        }
+    }
 }
