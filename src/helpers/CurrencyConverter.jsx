@@ -8,6 +8,11 @@ export class CurrencyConverter {
         this.targetRate = targetRate;
     }
 
+    convertNow(){
+        let convertedAmount = 0;
+        convertedAmount = currencyConverter.baseCurrencyToTargetCurrency()
+    }
+
     baseCurrencyToTargetCurrency() {
         if (this.currency === this.baseCurrency)
             return this.amount * this.targetRate;
