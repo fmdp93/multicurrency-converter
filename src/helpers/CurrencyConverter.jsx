@@ -1,10 +1,12 @@
+import {toFloat} from "./function";
+
 export class CurrencyConverter {
     baseCurrency = "EUR";
 
     constructor(currency, amount, rate, targetRate, targetCurrency) {
         this.currency = currency;
-        this.amount = amount;
-        this.rate = rate;
+        this.amount = toFloat(amount);
+        this.rate = toFloat(rate);
         this.targetRate = targetRate;
         this.targetCurrency = targetCurrency;
     }

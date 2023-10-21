@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext, createContext } from "react";
-import ConversionInputs from "./components/Input";
+import ConversionInputs from "./components/ConversionInputs";
 import useMoneyApi from "./hooks/useMoneyApi";
 import Rates from "./components/Rates";
 
@@ -9,10 +9,10 @@ const Home = () => {
     const MAIN_CURRENCY = "EUR";
     const SECONDARY_CURRENCY = "PHP";
 
-    const [rates, setRates] = useState(null);
-    const [baseCurrency, setBaseCurrency] = useState(0);
-    const [baseAmount, setBaseAmount] = useState("");
     const defaultCurrencies = [MAIN_CURRENCY, SECONDARY_CURRENCY];
+    const [rates, setRates] = useState(null);
+    const [baseCurrency, setBaseCurrency] = useState(defaultCurrencies[0]);
+    const [baseAmount, setBaseAmount] = useState("");    
 
     const [inputSize, setInputSize] = useState(2);
     const [conversionInputsList, setConversionInputsList] = useState(null);
@@ -40,12 +40,12 @@ const Home = () => {
     const handleAddCurrency = () => {
         setInputSize(inputSize + 1);
     };
-
+    
     useEffect(() => {
-        if (rates) {
+        if (rates) {            
             setConversionInputsList(getInputs(inputSize));
         }
-        // console.log(baseCurrency);
+        
     }, [rates, inputSize, baseAmount, baseCurrency]);
 
     return (

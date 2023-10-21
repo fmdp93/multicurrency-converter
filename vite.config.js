@@ -5,12 +5,17 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   esbuild: {
-    loader: "jsx",
+    loader: "tsx",
     include: [
       "src/**/*.jsx",
       "src/**/*.tsx",
       "node_modules/**/*.jsx",
       "node_modules/**/*.tsx",
     ]
+  },
+  define: {
+    CODE_OK: 0,
+    CODE_PREP : 1,
+    CODE_FATAL: 2,
   }
 })
