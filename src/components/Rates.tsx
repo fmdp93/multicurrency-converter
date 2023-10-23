@@ -1,19 +1,21 @@
-import { useState, useRef, useContext } from "react";
-import { ConverterContext } from "../Home";
+import { useState, useEffect, useContext } from "react";
+import { CtxConverter } from "./ConverterContext";
 const CURRENCY_INDEX = 0;
 const AMOUNT_INDEX = 1;
 
 const Rates = ({ arrayKey, currencyRef, defaultCurrency }) => {
-    const { rates, baseCurrency, setBaseCurrency, baseAmount, setBaseAmount } =
-        useContext(ConverterContext);
+    const { rates, setBaseCurrency } =
+        useContext(CtxConverter);
     const [currency, setCurrency] = useState("");
 
-    const handleChange = (currency) => {
-        // trigger effect
+    const handleChange = (currency: string) => {
+        // trigger effect        
         setCurrency(currency);
         setBaseCurrency(currency);
     };
 
+    useEffect(() => {
+    }, [rates])
     return (
         <>
             <select
@@ -23,14 +25,16 @@ const Rates = ({ arrayKey, currencyRef, defaultCurrency }) => {
                 value={currency || defaultCurrency}
             >
                 {rates &&
-                    rates.map((val, i) => (
+                    rates.map((val: string[]) =>
+                    (
                         <option
                             key={val[CURRENCY_INDEX]}
                             value={val[CURRENCY_INDEX]}
                         >
                             {val[CURRENCY_INDEX]}
                         </option>
-                    ))}
+                    )
+                    )}
             </select>
         </>
     );

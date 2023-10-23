@@ -1,16 +1,22 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import Rates from "./Rates";
 import { ratesToday } from "../../db/money";
-import { ConverterContext } from "../Home";
+import { CtxConverter } from "./ConverterContext";
 import { CurrencyConverter } from "../helpers/CurrencyConverter";
 import Money from "../helpers/Money";
 import { moneyIsValid } from "../helpers/validation";
 import useInputTextPreventKeys from "../hooks/useInputTextPreventKeys";
 
-const ConversionInputs = ({ arrayKey, defaultCurrency }) => {
+export type ConversionInputType = ({arrayKey , defaultCurrency}: any) => any;
+
+const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) => {
     const { rates, baseCurrency, setBaseCurrency, baseAmount, setBaseAmount } =
-        useContext(ConverterContext);
-    const [amount, setAmount] = useState("");
+        useContext(CtxConverter);
+    const [amount, setAmount] = useState({
+        value: "",
+        cursorPos: 0,
+        ref: "",
+    });
     const [amountCursorPos, setAmountCursorPos] = useState(0);
     const amountRef = useRef("");
     const currencyRef = useRef("");
@@ -38,7 +44,7 @@ const ConversionInputs = ({ arrayKey, defaultCurrency }) => {
         setAmountCursorPos(cursorPos);
 
         if (moneyIsValid(eAmount)) {
-            setAmount(eAmount);
+            setAmount({...amount, value: eAmount});
             setBaseAmount(eAmount);
             setBaseCurrency(currencyRef.current.value);
         } else {
@@ -66,16 +72,16 @@ const ConversionInputs = ({ arrayKey, defaultCurrency }) => {
         if (baseAmount !== "") {
             let baseRate = ratesToday.rates[baseCurrency];
             let targetRate = ratesToday.rates[currencyRef.current.value];
-            let amountInMoneyFormat;
+            let amountInMoneyFormat: string = "";
 
-            if (!moneyIsValid(amount)) {
+            if (!moneyIsValid(amount.value)) {
                 return "";
             }
 
             // For input that user is typing
             if (currencyRef.current.value === baseCurrency) {
                 // repointCursor()
-                let objMoney = new Money(amount.toString());
+                let objMoney = new Money(amount.value.toString());
                 amountInMoneyFormat = objMoney.getFormatted();
             }
 
@@ -95,7 +101,7 @@ const ConversionInputs = ({ arrayKey, defaultCurrency }) => {
                 amountInMoneyFormat = objMoney.getFormatted();
             }
 
-            setAmount(amountInMoneyFormat);
+            setAmount({...amount, value: amountInMoneyFormat});
         }
     }, [baseAmount, baseCurrency]);
 
@@ -104,16 +110,13 @@ const ConversionInputs = ({ arrayKey, defaultCurrency }) => {
             <input
                 type="text"
                 className="currencyValue"
-                value={amount}
+                value={amount.value}
                 onChange={(e) => handleChange(e)}
                 ref={amountRef}
             />
             <Rates
-                rates={rates}
                 arrayKey={arrayKey}
                 currencyRef={currencyRef}
-                baseCurrency={baseCurrency}
-                setBaseCurrency={setBaseCurrency}
                 defaultCurrency={defaultCurrency}
             ></Rates>
         </div>

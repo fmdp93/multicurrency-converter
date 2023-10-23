@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, useContext, createContext } from "react";
-import ConversionInputs from "./components/ConversionInputs";
+import { useState, useEffect, useRef } from "react";
+import ConversionInputs, { ConversionInputType } from "./components/ConversionInputs";
 import useMoneyApi from "./hooks/useMoneyApi";
 import Rates from "./components/Rates";
+import ConverterContext from "./components/ConverterContext";
 
-export const ConverterContext = createContext(null);
 
 const Home = () => {
     const MAIN_CURRENCY = "EUR";
@@ -11,18 +11,14 @@ const Home = () => {
 
     const defaultCurrencies = [MAIN_CURRENCY, SECONDARY_CURRENCY];
     const [rates, setRates] = useState(null);
-    const [baseCurrency, setBaseCurrency] = useState(defaultCurrencies[0]);
-    const [baseAmount, setBaseAmount] = useState("");    
 
     const [inputSize, setInputSize] = useState(2);
     const [conversionInputsList, setConversionInputsList] = useState(null);
     const optionAddCurrency = useRef(null);
 
-    const Converter = useContext(ConverterContext);
-
     useMoneyApi(setRates);
 
-    function getInputs(inputSize) {
+    function getInputs(inputSize: number): number {
         let inputs = [];
         for (let i = 0; i < inputSize; i++) {
             inputs = [
@@ -40,41 +36,31 @@ const Home = () => {
     const handleAddCurrency = () => {
         setInputSize(inputSize + 1);
     };
-    
+
     useEffect(() => {
-        if (rates) {            
+        if (rates) {
             setConversionInputsList(getInputs(inputSize));
         }
-        
-    }, [rates, inputSize, baseAmount, baseCurrency]);
+
+    }, [rates, inputSize]);
 
     return (
         <div className="page-home">
             <h1>Convert</h1>
             <div className="converter">
                 {rates && (
-                    <ConverterContext.Provider
-                        value={{
-                            rates,
-                            baseCurrency,
-                            setBaseCurrency,
-                            baseAmount,
-                            setBaseAmount,
-                        }}
-                    >
+                    <ConverterContext rates={rates} currency={defaultCurrencies[0]}>
                         {conversionInputsList &&
-                            conversionInputsList.map((input) => input)}
+                            conversionInputsList.map((input: ConversionInputType) => input)}
                         <div className="row-input">
                             <button onClick={handleAddCurrency}>
                                 Add Currency
                             </button>
                             <Rates
-                                rates={rates}
                                 inputRef={optionAddCurrency}
-                                setBaseCurrency={setBaseCurrency}
                             ></Rates>
                         </div>
-                    </ConverterContext.Provider>
+                    </ConverterContext>
                 )}
             </div>
         </div>

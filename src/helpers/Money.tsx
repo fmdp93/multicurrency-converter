@@ -6,7 +6,7 @@ class Money {
     sliceStop = undefined;
     decimalPlaces = 2;
 
-    constructor(number) {
+    constructor(number: string) {
         this.number = number;
         this.setDotIndex();
         this.setDotAndCents();
@@ -32,7 +32,7 @@ class Money {
     setWholeNumbers() {
         this.wholeNumbers = this.number.slice(0, this.dotIndex);
     }
-    getFormatted() {
+    getFormatted(): string {
         let numFormat = new Intl.NumberFormat("en-US");
         let formatted = numFormat.format(this.wholeNumbers);
         return formatted + this.dotAndcents;
