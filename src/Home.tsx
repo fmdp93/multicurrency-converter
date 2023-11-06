@@ -4,22 +4,24 @@ import useMoneyApi from "./hooks/useMoneyApi";
 import Rates from "./components/Rates";
 import ConverterContext from "./components/ConverterContext";
 
-
 const Home = () => {
     const MAIN_CURRENCY = "EUR";
     const SECONDARY_CURRENCY = "PHP";
 
     const defaultCurrencies = [MAIN_CURRENCY, SECONDARY_CURRENCY];
-    const [rates, setRates] = useState(null);
+    const [rates, setRates] = useState<string | null>(null);
 
     const [inputSize, setInputSize] = useState(2);
-    const [conversionInputsList, setConversionInputsList] = useState(null);
+    const [
+        conversionInputsList,
+        setConversionInputsList
+    ] = useState<Array<JSX.Element> | null>(null);
     const optionAddCurrency = useRef(null);
 
     useMoneyApi(setRates);
 
-    function getInputs(inputSize: number): number {
-        let inputs = [];
+    function getInputs(inputSize: number): Array<JSX.Element> {
+        let inputs: Array<JSX.Element> = [];
         for (let i = 0; i < inputSize; i++) {
             inputs = [
                 ...inputs,
