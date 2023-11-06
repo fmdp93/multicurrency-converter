@@ -7,7 +7,7 @@ import Money from "../helpers/Money";
 import { moneyIsValid } from "../helpers/validation";
 import useInputTextPreventKeys from "../hooks/useInputTextPreventKeys";
 
-export type ConversionInputType = ({arrayKey , defaultCurrency}: any) => any;
+export type ConversionInputType = ({ arrayKey, defaultCurrency }: any) => any;
 
 const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) => {
     const { rates, baseCurrency, setBaseCurrency, baseAmount, setBaseAmount } =
@@ -17,7 +17,6 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
         cursorPos: 0,
         ref: "",
     });
-    const [amountCursorPos, setAmountCursorPos] = useState(0);
     const amountRef = useRef("");
     const currencyRef = useRef("");
     let allowedKeys = Array.from("1234567890.");
@@ -38,10 +37,7 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
     // useInputTextPreventKeys(amountRef, allowedKeys);
 
     const handleChange = (e) => {
-        // console.log(arrayKey);
         let eAmount = e.target.value.replaceAll(",", "");
-        let cursorPos = e.target.selectionStart;
-        setAmountCursorPos(cursorPos);
 
         if (moneyIsValid(eAmount)) {
             setAmount({...amount, value: eAmount});
@@ -65,27 +61,15 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
     }
 
     useEffect(() => {
-        // console.log('rendered');
-        // console.log(`Index: ${arrayKey}`);        
-        // console.log('repoint cursor: ' + (currencyRef.current.value === baseCurrency))
-        
         if (baseAmount !== "") {
             let baseRate = ratesToday.rates[baseCurrency];
             let targetRate = ratesToday.rates[currencyRef.current.value];
-            let amountInMoneyFormat: string = "";
 
             if (!moneyIsValid(amount.value)) {
                 return "";
             }
 
-            // For input that user is typing
-            if (currencyRef.current.value === baseCurrency) {
-                // repointCursor()
-                let objMoney = new Money(amount.value.toString());
-                amountInMoneyFormat = objMoney.getFormatted();
-            }
-
-            // converted money inputs
+            // Converted money inputs the except the user is typing
             if (currencyRef.current.value !== baseCurrency) {
                 const currencyConverter = new CurrencyConverter(
                     baseCurrency,
@@ -100,8 +84,6 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
                 objMoney.setDotAndCents();
                 amountInMoneyFormat = objMoney.getFormatted();
             }
-
-            setAmount({...amount, value: amountInMoneyFormat});
         }
     }, [baseAmount, baseCurrency]);
 
