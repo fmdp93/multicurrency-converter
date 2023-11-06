@@ -9,9 +9,7 @@ const Rates = ({ arrayKey, currencyRef, defaultCurrency }) => {
     const [currency, setCurrency] = useState("");
 
     const handleChange = (currency: string) => {
-        // trigger effect        
         setCurrency(currency);
-        setBaseCurrency(currency);
     };
 
     useEffect(() => {
