@@ -9,6 +9,8 @@ export default defineConfig({
     include: [
       "src/**/*.jsx",
       "src/**/*.tsx",
+      "db/**/*.jsx",
+      "db/**/*.tsx",
       "node_modules/**/*.jsx",
       "node_modules/**/*.tsx",
     ]
