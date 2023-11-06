@@ -40,24 +40,22 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
         let eAmount = e.target.value.replaceAll(",", "");
 
         if (moneyIsValid(eAmount)) {
-            setAmount({...amount, value: eAmount});
+            setAmount({ ...amount, value: eAmount });
             setBaseAmount(eAmount);
             setBaseCurrency(currencyRef.current.value);
-        } else {
-            // Prevent input cursor from going to the end
-            e.target.blur();
-            setTimeout(() => {
-                e.target.setSelectionRange(cursorPos, cursorPos - 1);
-                e.target.focus();
-            }, 50);
         }
     };
 
-    function repointCursor(){
-        amountRef.current.selectionStart = amountCursorPos
-        amountRef.current.blur();
-        amountRef.current.focus();
-        console.log('@' + amountRef.current.selectionStart);
+    const handleBlur = (e) => {
+        let objMoney = new Money(e.target.value);
+        objMoney.setDecimalPlaces(2);
+        objMoney.setDotAndCents();
+        let amountInMoneyFormat = objMoney.getFormatted();
+        setAmount({ ...amount, value: amountInMoneyFormat });
+    }
+
+    const handleFocus = (e) => {
+        setAmount({...amount, value: amount.value.replace(",", "")});
     }
 
     useEffect(() => {
@@ -82,7 +80,8 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
                 let objMoney = new Money(convertedAmount.toString());
                 objMoney.setDecimalPlaces(2);
                 objMoney.setDotAndCents();
-                amountInMoneyFormat = objMoney.getFormatted();
+                let amountInMoneyFormat = objMoney.getFormatted();
+                setAmount({ ...amount, value: amountInMoneyFormat });
             }
         }
     }, [baseAmount, baseCurrency]);
@@ -94,6 +93,8 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
                 className="currencyValue"
                 value={amount.value}
                 onChange={(e) => handleChange(e)}
+                onBlur={(e) => handleBlur(e)}
+                onFocus={(e) => handleFocus(e)}
                 ref={amountRef}
             />
             <Rates
