@@ -5,13 +5,14 @@ import Rates from "./components/Rates";
 import ConverterContext from "./components/ConverterContext";
 
 const Home = () => {
-    const MAIN_CURRENCY = "EUR";
-    const SECONDARY_CURRENCY = "PHP";
+    const CURRENCY_1 = "PHP";
+    const CURRENCY_2 = "USD";
+    const CURRENCY_3 = "EUR";
 
-    const defaultCurrencies = [MAIN_CURRENCY, SECONDARY_CURRENCY];
+    const defaultCurrencies = [CURRENCY_1, CURRENCY_2, CURRENCY_3];
     const [rates, setRates] = useState<string | null>(null);
 
-    const [inputSize, setInputSize] = useState(2);
+    const [inputSize, setInputSize] = useState(3);
     const [
         conversionInputsList,
         setConversionInputsList
