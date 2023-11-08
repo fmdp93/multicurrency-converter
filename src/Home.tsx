@@ -48,7 +48,7 @@ const Home = () => {
 
     return (
         <div className="page-home">
-            <h1>Convert</h1>
+            <h1>Multi Currency Converter</h1>
             <div className="converter">
                 {rates && (
                     <ConverterContext rates={rates} currency={defaultCurrencies[0]}>
