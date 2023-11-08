@@ -7,7 +7,7 @@ import Money from "../helpers/Money";
 import { moneyIsValid } from "../helpers/validation";
 import useInputTextPreventKeys from "../hooks/useInputTextPreventKeys";
 
-export type ConversionInputType = ({ arrayKey, defaultCurrency }: any) => any;
+export type ConversionInputType = ({ arrayKey, defaultCurrency }: { arrayKey: number, defaultCurrency: string }) => JSX.Element;
 
 const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) => {
     const { rates, baseCurrency, setBaseCurrency, baseAmount, setBaseAmount } =
@@ -36,7 +36,7 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
 
     // useInputTextPreventKeys(amountRef, allowedKeys);
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.FocusEvent<HTMLInputElement>) => {        
         let eAmount = e.target.value.replaceAll(",", "");
 
         if (moneyIsValid(eAmount)) {
@@ -46,7 +46,7 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
         }
     };
 
-    const handleBlur = (e) => {
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         let objMoney = new Money(e.target.value);
         objMoney.setDecimalPlaces(2);
         objMoney.setDotAndCents();
@@ -54,8 +54,8 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
         setAmount({ ...amount, value: amountInMoneyFormat });
     }
 
-    const handleFocus = (e) => {
-        setAmount({...amount, value: amount.value.replace(",", "")});
+    const handleFocus = () => {
+        setAmount({ ...amount, value: amount.value.replace(",", "") });
     }
 
     useEffect(() => {
@@ -94,7 +94,7 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
                 value={amount.value}
                 onChange={(e) => handleChange(e)}
                 onBlur={(e) => handleBlur(e)}
-                onFocus={(e) => handleFocus(e)}
+                onFocus={(e) => handleFocus()}
                 ref={amountRef}
             />
             <Rates

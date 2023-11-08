@@ -1,0 +1,14 @@
+button.to-top{
+    background-color: transparent;
+    border: none;
+    height: 0;
+    @at-root :nth-child(1 of .row-input) :nth-child(1 of .to-top){
+        visibility: hidden;
+    }
+    &::before {
+        content: url("/to-top.svg");
+        filter: brightness(0) saturate(100%) invert(38%) sepia(20%) saturate(840%) hue-rotate(33deg) brightness(98%) contrast(92%);
+        width: 3rem;
+        display: block;       
+    }
+}

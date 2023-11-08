@@ -33,7 +33,8 @@ const Rates = ({ arrayKey, currencyRef, defaultCurrency }) => {
                         </option>
                     )
                     )}
-            </select>
+            </select>            
+            <button className="to-top">&nbsp;</button>
         </>
     );
 };
