@@ -47,7 +47,7 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
         if (moneyIsValid(eAmount)) {
             setAmount({ ...amount, value: eAmount });
             setBaseAmount(eAmount);
-            setBaseCurrency(currencyRef.current.value);
+            setFromCurrency(currencyRef.current.value);
         }
     };
 
