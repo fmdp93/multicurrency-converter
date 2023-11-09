@@ -8,6 +8,7 @@ class Money {
     constructor(number: string) {
         this.number = number;
         this.setDotIndex();
+        this.setSliceStop();
         this.setDotAndCents();
         this.setWholeNumbers();
     }
@@ -17,8 +18,8 @@ class Money {
         this.dotIndex = this.dotIndex === -1 ? undefined : this.dotIndex;
     }
 
-    setDecimalPlaces(decimalPlaces){
-        if(decimalPlaces > 0){
+    setSliceStop(decimalPlaces = 2){
+        if(decimalPlaces > 0 && this.dotIndex !== undefined){
             this.sliceStop = this.dotIndex + decimalPlaces + 1;
         }
     }
