@@ -10,7 +10,7 @@ import { signal } from "@preact/signals";
 
 export type ConversionInputType = ({ arrayKey, defaultCurrency }: { arrayKey: number, defaultCurrency: string }) => JSX.Element;
 
-let mainAmount = signal("0");
+let mainAmount = signal(0);
 
 const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) => {
     const { rates, fromCurrency, setFromCurrency,
@@ -72,7 +72,7 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
         let toRate = ratesToday.rates[currencyRef.current.value];
 
         if (arrayKey === 0) {
-            mainAmount.value = "90000";
+            mainAmount.value = 90000;
         } else {
             rates.filter((val: ratesType) => {
                 if (val[0] === currencyRef.current.value) {
