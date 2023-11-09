@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import Rates from "./Rates";
 import { ratesToday, ratesType } from "../../db/money";
-import { CtxConverter } from "./ConverterContext";
+import { CtxConverter, ConvertContextType } from "./ConverterContext";
 import { CurrencyConverter } from "../helpers/CurrencyConverter";
 import Money from "../helpers/Money";
 import { moneyIsValid } from "../helpers/validation";
@@ -14,6 +14,9 @@ let mainAmount = signal("0");
 
 const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) => {
     const { rates, fromCurrency, setFromCurrency,
+        baseAmount, setBaseAmount } =
+        useContext<ConvertContextType | any>(CtxConverter)
+
     const [amount, setAmount] = useState({
         value: "",
         cursorPos: 0,
@@ -36,9 +39,9 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
         "Home",
     ];
 
-    // useInputTextPreventKeys(amountRef, allowedKeys);
+    // useInputTextPreventKeys(amountRef, allowedKeys);    
 
-    const handleChange = (e: React.FocusEvent<HTMLInputElement>) => {        
+    const handleChange = (e: React.FocusEvent<HTMLInputElement>) => {
         let eAmount = e.target.value.replaceAll(",", "");
 
         if (moneyIsValid(eAmount)) {
@@ -50,7 +53,7 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         let objMoney = new Money(e.target.value);
-        objMoney.setDecimalPlaces(2);
+        objMoney.setSliceStop(2);
         objMoney.setDotAndCents();
         let amountInMoneyFormat = objMoney.getFormatted();
         setAmount({ ...amount, value: amountInMoneyFormat });
@@ -59,36 +62,54 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
     const handleFocus = () => {
         setAmount({ ...amount, value: amount.value.replace(",", "") });
     }
+
     const handleToTopClick = () => {
         console.log(mainAmount.value++);
     }
 
     useEffect(() => {
         let fromRate = ratesToday.rates[fromCurrency];
-            rates.filter((val: ratesType) => {
-        if (baseAmount !== "") {
-            let baseRate = ratesToday.rates[baseCurrency];
-            let targetRate = ratesToday.rates[currencyRef.current.value];
+        let toRate = ratesToday.rates[currencyRef.current.value];
 
+        if (arrayKey === 0) {
+            mainAmount.value = "90000";
+        } else {
+            rates.filter((val: ratesType) => {
+                if (val[0] === currencyRef.current.value) {
+                    mainAmount.value = parseFloat(mainAmount.value)
+                }
+            })
+
+            const currencyConverter = new CurrencyConverter(
+                fromCurrency,
+                baseAmount,
+                fromRate,
+                toRate,
+                currencyRef.current.value
+            );
+
+            let convertedAmount = currencyConverter.getConversion();
+            let objMoney = new Money(convertedAmount.toString());
+            setAmount({ ...amount, value: objMoney.getFormatted() });
+        }
+
+        if (baseAmount !== "") {
             if (!moneyIsValid(amount.value)) {
                 return "";
             }
 
-            // Converted money inputs the except the user is typing
+            // Convert money inputs except the user is typing
             if (currencyRef.current.value !== fromCurrency) {
                 const currencyConverter = new CurrencyConverter(
                     fromCurrency,
                     baseAmount,
-                    baseRate,
-                    targetRate,
+                    fromRate,
+                    toRate,
                     currencyRef.current.value
                 );
                 let convertedAmount = currencyConverter.getConversion();
                 let objMoney = new Money(convertedAmount.toString());
-                objMoney.setDecimalPlaces(2);
-                objMoney.setDotAndCents();
-                let amountInMoneyFormat = objMoney.getFormatted();
-                setAmount({ ...amount, value: amountInMoneyFormat });
+                setAmount({ ...amount, value: objMoney.getFormatted() });
             }
         }
     }, [baseAmount, fromCurrency]);

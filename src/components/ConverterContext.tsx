@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, Dispatch, SetStateAction } from "react";
 
 
-export type ConvertContextValue = {
+export type ConvertContextType = {
     rates: number | null,
     fromCurrency: string,
     setFromCurrency: Dispatch<SetStateAction<string>>,
@@ -9,17 +9,17 @@ export type ConvertContextValue = {
     setBaseAmount: Dispatch<SetStateAction<string>>,
 }
 
-export const CtxConverter = createContext<ConvertContextValue | null>(null);
+export const CtxConverter = createContext<ConvertContextType | null>(null);
 
 const ConverterContext = (props: any) => {
     useContext(CtxConverter);
     const [fromCurrency, setFromCurrency] = useState<string>(props.currency);
     const [baseAmount, setBaseAmount] = useState("");
 
-    const contextVal: ConvertContextValue = {
+    const contextVal: ConvertContextType = {
         rates: props.rates,
         fromCurrency,
-        setFromCurrency,
+        setFromCurrency: setFromCurrency,
         baseAmount,
         setBaseAmount,
     };
