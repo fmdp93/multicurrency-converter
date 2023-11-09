@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import Rates from "./Rates";
-import { ratesToday } from "../../db/money";
+import { ratesToday, ratesType } from "../../db/money";
 import { CtxConverter } from "./ConverterContext";
 import { CurrencyConverter } from "../helpers/CurrencyConverter";
 import Money from "../helpers/Money";
@@ -65,6 +65,7 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
 
     useEffect(() => {
         let fromRate = ratesToday.rates[fromCurrency];
+            rates.filter((val: ratesType) => {
         if (baseAmount !== "") {
             let baseRate = ratesToday.rates[baseCurrency];
             let targetRate = ratesToday.rates[currencyRef.current.value];
