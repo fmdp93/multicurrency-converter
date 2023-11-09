@@ -10,8 +10,7 @@ import useInputTextPreventKeys from "../hooks/useInputTextPreventKeys";
 export type ConversionInputType = ({ arrayKey, defaultCurrency }: { arrayKey: number, defaultCurrency: string }) => JSX.Element;
 
 const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) => {
-    const { rates, baseCurrency, setBaseCurrency, baseAmount, setBaseAmount } =
-        useContext(CtxConverter);
+    const { rates, fromCurrency, setFromCurrency,
     const [amount, setAmount] = useState({
         value: "",
         cursorPos: 0,
@@ -59,6 +58,7 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
     }
 
     useEffect(() => {
+        let fromRate = ratesToday.rates[fromCurrency];
         if (baseAmount !== "") {
             let baseRate = ratesToday.rates[baseCurrency];
             let targetRate = ratesToday.rates[currencyRef.current.value];
@@ -68,9 +68,9 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
             }
 
             // Converted money inputs the except the user is typing
-            if (currencyRef.current.value !== baseCurrency) {
+            if (currencyRef.current.value !== fromCurrency) {
                 const currencyConverter = new CurrencyConverter(
-                    baseCurrency,
+                    fromCurrency,
                     baseAmount,
                     baseRate,
                     targetRate,
@@ -84,7 +84,7 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
                 setAmount({ ...amount, value: amountInMoneyFormat });
             }
         }
-    }, [baseAmount, baseCurrency]);
+    }, [baseAmount, fromCurrency]);
 
     return (
         <div className="row-input">
