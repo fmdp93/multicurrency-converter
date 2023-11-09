@@ -4,7 +4,7 @@ const CURRENCY_INDEX = 0;
 const AMOUNT_INDEX = 1;
 
 const Rates = ({ arrayKey, currencyRef, defaultCurrency }) => {
-    const { rates, setBaseCurrency } =
+    const { rates } =
         useContext(CtxConverter);
     const [currency, setCurrency] = useState("");
 
@@ -33,8 +33,7 @@ const Rates = ({ arrayKey, currencyRef, defaultCurrency }) => {
                         </option>
                     )
                     )}
-            </select>            
-            <button className="to-top">&nbsp;</button>
+            </select>                        
         </>
     );
 };
