@@ -1,10 +1,9 @@
 class Money {
     number = "";
-    dotIndex = undefined;
+    dotIndex: number | undefined = undefined;
     dotAndcents = "";
-    wholeNumbers = "";
-    sliceStop = undefined;
-    decimalPlaces = 2;
+    wholeNumbers: number = 0;
+    sliceStop: number | undefined = undefined;
 
     constructor(number: string) {
         this.number = number;
@@ -30,7 +29,7 @@ class Money {
         }
     }
     setWholeNumbers() {
-        this.wholeNumbers = this.number.slice(0, this.dotIndex);
+        this.wholeNumbers = parseFloat(this.number.slice(0, this.dotIndex));
     }
     getFormatted(): string {
         let numFormat = new Intl.NumberFormat("en-US");
