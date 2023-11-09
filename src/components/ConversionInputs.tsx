@@ -6,8 +6,11 @@ import { CurrencyConverter } from "../helpers/CurrencyConverter";
 import Money from "../helpers/Money";
 import { moneyIsValid } from "../helpers/validation";
 import useInputTextPreventKeys from "../hooks/useInputTextPreventKeys";
+import { signal } from "@preact/signals";
 
 export type ConversionInputType = ({ arrayKey, defaultCurrency }: { arrayKey: number, defaultCurrency: string }) => JSX.Element;
+
+let mainAmount = signal("0");
 
 const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) => {
     const { rates, fromCurrency, setFromCurrency,
@@ -56,6 +59,9 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
     const handleFocus = () => {
         setAmount({ ...amount, value: amount.value.replace(",", "") });
     }
+    const handleToTopClick = () => {
+        console.log(mainAmount.value++);
+    }
 
     useEffect(() => {
         let fromRate = ratesToday.rates[fromCurrency];
@@ -102,6 +108,7 @@ const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) =>
                 currencyRef={currencyRef}
                 defaultCurrency={defaultCurrency}
             ></Rates>
+            <button className="to-top" onClick={handleToTopClick}>&nbsp;</button>
         </div>
     );
 };
