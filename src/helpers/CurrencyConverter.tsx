@@ -2,18 +2,18 @@ import { toFloat } from "./function";
 
 export class CurrencyConverter {
     baseCurrency = "EUR";
-    currency: string;
+    fromCurrency: string;
     amount: number;
-    rate: number;
-    targetRate: number;
-    targetCurrency: string;
+    fromRate: number;
+    toRate: number;
+    toCurrency: string;
 
-    constructor(currency: string, amount: string, rate: string, targetRate: string, targetCurrency: string) {
-        this.currency = currency;
+    constructor(fromCurrency: string, amount: number, fromRate: number, toRate: number, toCurrency: string) {
+        this.fromCurrency = fromCurrency;
         this.amount = toFloat(amount);
-        this.rate = toFloat(rate);
-        this.targetRate = toFloat(targetRate);
-        this.targetCurrency = targetCurrency;
+        this.fromRate = toFloat(fromRate);
+        this.toRate = toFloat(toRate);
+        this.toCurrency = toCurrency;
     }
 
     getConversion() {
@@ -28,21 +28,21 @@ export class CurrencyConverter {
     }
 
     baseToTarget() {
-        if (this.currency === this.baseCurrency)
-            return this.amount * this.targetRate;
+        if (this.fromCurrency === this.baseCurrency)
+            return this.amount * this.toRate;
     }
 
     targetToBase() {
         if (
-            this.currency !== this.baseCurrency &&
-            this.targetCurrency === this.baseCurrency
+            this.fromCurrency !== this.baseCurrency &&
+            this.toCurrency === this.baseCurrency
         ) {
-            return this.amount / this.rate;
+            return this.amount / this.fromRate;
         }
     }
 
     targetToTarget() {
         // target -> EUR -> target
-        return (this.amount / this.rate) * this.targetRate;
+        return (this.amount / this.fromRate) * this.toRate;
     }
 }
