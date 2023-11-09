@@ -1,4 +1,15 @@
-export const ratesToday = {
+export type ratesTodayType = {
+    success: boolean,
+    timestamp: number,
+    base: string,
+    date: string,
+    rates: ratesType
+}
+
+export type ratesType = {
+    [key: string]: number
+}
+export const ratesToday: ratesTodayType = {
     "success": true,
     "timestamp": 1697029563,
     "base": "EUR",
