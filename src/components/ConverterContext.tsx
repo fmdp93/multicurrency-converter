@@ -19,7 +19,7 @@ const ConverterContext = (props: any) => {
     const contextVal: ConvertContextType = {
         rates: props.rates,
         fromCurrency,
-        setFromCurrency: setFromCurrency,
+        setFromCurrency,
         baseAmount,
         setBaseAmount,
     };
