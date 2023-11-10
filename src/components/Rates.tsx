@@ -2,10 +2,15 @@ import { useState, useEffect, useContext } from "react";
 import { ConvertContextType, CtxConverter } from "./ConverterContext";
 const CURRENCY_INDEX = 0;
 const AMOUNT_INDEX = 1;
-
-const Rates = ({ arrayKey, currencyRef, defaultCurrency }: {
-    arrayKey: number, currencyRef: string, defaultCurrency: string
-}) => {
+type RatesPropType = {
+    arrayKey?: number, currencyRef?: string, defaultCurrency?: string
+}
+const Rates = (
+    {
+        arrayKey,
+        currencyRef,
+        defaultCurrency
+    }: RatesPropType) => {
     const { rates } =
         useContext(CtxConverter) as ConvertContextType
     const [currency, setCurrency] = useState("");
@@ -35,7 +40,7 @@ const Rates = ({ arrayKey, currencyRef, defaultCurrency }: {
                         </option>
                     )
                     )}
-            </select>                        
+            </select>
         </>
     );
 };
