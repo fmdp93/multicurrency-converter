@@ -25,7 +25,7 @@ const ConversionInputs = (
         ref: "",
     });
     const amountRef = useRef("");
-    const currencyRef = useRef("");
+    const currencyRef = useRef<HTMLInputElement | null>(null);
     let allowedKeys = Array.from("1234567890.");
     allowedKeys = [
         ...allowedKeys,
@@ -49,7 +49,7 @@ const ConversionInputs = (
         if (moneyIsValid(eAmount)) {
             setAmount({ ...amount, value: eAmount });
             setBaseAmount(eAmount);
-            setFromCurrency(currencyRef.current.value);
+            setFromCurrency(currencyRef.current?.value as string);
         }
     };
 
@@ -71,14 +71,14 @@ const ConversionInputs = (
 
     useEffect(() => {
         let fromRate = ratesToday.rates[fromCurrency];
-        let toRate = ratesToday.rates[currencyRef.current.value];
-
+        let toRate = ratesToday.rates[currencyRef.current?.value as string];
+        
         if (arrayKey === 0) {
             mainAmount.value = 90000;
         } else {
-            rates.filter((val: ratesType) => {
-                if (val[0] === currencyRef.current.value) {
-                    mainAmount.value = parseFloat(mainAmount.value)
+            rates.filter((val) => {                
+                if (val[0] === currencyRef.current?.value) {
+                    mainAmount.value = mainAmount.value
                 }
             })
 
