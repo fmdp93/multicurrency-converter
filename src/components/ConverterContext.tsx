@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect, Dispatch, SetStateAction } from "react";
-
+import { ratesType } from "../../db/money";
 
 export type ConvertContextType = {
-    rates: number | null,
+    rates: ratesType,
     fromCurrency: string,
     setFromCurrency: Dispatch<SetStateAction<string>>,
     baseAmount: string,
@@ -11,18 +11,21 @@ export type ConvertContextType = {
 
 export const CtxConverter = createContext<ConvertContextType | null>(null);
 
-const ConverterContext = (props: any) => {
+const ConverterContext = ({children, currency, rates}: {
+    children: React.ReactNode, currency: string, rates: ratesType
+}) => {
     useContext(CtxConverter);
-    const [fromCurrency, setFromCurrency] = useState<string>(props.currency);
+    const [fromCurrency, setFromCurrency] = useState<string>(currency);
     const [baseAmount, setBaseAmount] = useState("");
 
     const contextVal: ConvertContextType = {
-        rates: props.rates,
+        rates,
         fromCurrency,
         setFromCurrency,
         baseAmount,
         setBaseAmount,
     };
+    
     useEffect(()=>{
         // console.log(props.rates);
     },[baseAmount, fromCurrency]);
@@ -31,7 +34,7 @@ const ConverterContext = (props: any) => {
         <CtxConverter.Provider
             value={contextVal}
         >
-            {props.children}
+            {children}
         </CtxConverter.Provider>
     );
 }
