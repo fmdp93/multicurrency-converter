@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { CtxConverter } from "./ConverterContext";
+import { ConvertContextType, CtxConverter } from "./ConverterContext";
 const CURRENCY_INDEX = 0;
 const AMOUNT_INDEX = 1;
 
@@ -7,7 +7,7 @@ const Rates = ({ arrayKey, currencyRef, defaultCurrency }: {
     arrayKey: number, currencyRef: string, defaultCurrency: string
 }) => {
     const { rates } =
-        useContext(CtxConverter);
+        useContext(CtxConverter) as ConvertContextType
     const [currency, setCurrency] = useState("");
 
     const handleChange = (currency: string) => {
