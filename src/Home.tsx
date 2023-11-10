@@ -10,7 +10,7 @@ const Home = () => {
     const CURRENCY_3 = "EUR";
 
     const defaultCurrencies = [CURRENCY_1, CURRENCY_2, CURRENCY_3];
-    const [rates, setRates] = useState<string | null>(null);
+    const [rates, setRates] = useState<[] | null>(null);
 
     const [inputSize, setInputSize] = useState(3);
     const [
