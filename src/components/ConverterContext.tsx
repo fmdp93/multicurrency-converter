@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, Dispatch, SetStateAction } from "react";
 import { ratesType } from "../../db/money";
+import { mainAmount } from "./ConversionInputs";
 
 export type ConvertContextType = {
     rates: [],
@@ -16,7 +17,7 @@ const ConverterContext = ({children, currency, rates}: {
 }) => {
     useContext(CtxConverter);
     const [fromCurrency, setFromCurrency] = useState<string>(currency);
-    const [baseAmount, setBaseAmount] = useState("");
+    const [baseAmount, setBaseAmount] = useState(mainAmount.value);
 
     const contextVal: ConvertContextType = {
         rates,

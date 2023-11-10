@@ -48,4 +48,8 @@ export class CurrencyConverter {
         // target -> EUR -> target
         return (this.amount / this.fromRate) * this.toRate;
     }
+
+    setAmount(amount: string){
+        this.amount = parseFloat(amount);
+    }
 }

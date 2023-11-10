@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import Rates from "./Rates";
-import { ratesToday, ratesType } from "../../db/money";
+import { ratesToday } from "../../db/money";
 import { CtxConverter, ConvertContextType } from "./ConverterContext";
 import { CurrencyConverter } from "../helpers/CurrencyConverter";
 import Money from "../helpers/Money";
@@ -8,10 +8,10 @@ import { moneyIsValid } from "../helpers/validation";
 import useInputTextPreventKeys from "../hooks/useInputTextPreventKeys";
 import { signal } from "@preact/signals";
 
-type ConversionInputPropsType = 
-{ arrayKey: number, defaultCurrency: string };
+type ConversionInputPropsType =
+    { arrayKey: number, defaultCurrency: string };
 
-let mainAmount = signal(0);
+export let mainAmount = signal("90,000");
 
 const ConversionInputs = (
     { arrayKey, defaultCurrency }: ConversionInputPropsType) => {
@@ -20,7 +20,7 @@ const ConversionInputs = (
         useContext(CtxConverter) as ConvertContextType;
 
     const [amount, setAmount] = useState({
-        value: "",
+        value: mainAmount.value,
         cursorPos: 0,
         ref: "",
     });
@@ -48,6 +48,7 @@ const ConversionInputs = (
 
         if (moneyIsValid(eAmount)) {
             setAmount({ ...amount, value: eAmount });
+            mainAmount.value = eAmount;
             setBaseAmount(eAmount);
             setFromCurrency(currencyRef.current?.value as string);
         }
@@ -66,36 +67,14 @@ const ConversionInputs = (
     }
 
     const handleToTopClick = () => {
-        console.log(mainAmount.value++);
+        // console.log(mainAmount.value++);
     }
 
     useEffect(() => {
-        let fromRate = ratesToday.rates[fromCurrency];
-        let toRate = ratesToday.rates[currencyRef.current?.value as string];
-        
-        if (arrayKey === 0) {
-            mainAmount.value = 90000;
-        } else {
-            rates.filter((val) => {                
-                if (val[0] === currencyRef.current?.value) {
-                    mainAmount.value = mainAmount.value
-                }
-            })
-
-            const currencyConverter = new CurrencyConverter(
-                fromCurrency,
-                baseAmount,
-                fromRate,
-                toRate,
-                currencyRef.current?.value
-            );
-
-            let convertedAmount = currencyConverter.getConversion();
-            let objMoney = new Money(convertedAmount.toString());
-            setAmount({ ...amount, value: objMoney.getFormatted() });
-        }
-
         if (baseAmount !== "") {
+            let fromRate = ratesToday.rates[fromCurrency];
+            let toRate = ratesToday.rates[currencyRef.current?.value as string];
+
             if (!moneyIsValid(amount.value)) {
                 return undefined;
             }
@@ -109,12 +88,12 @@ const ConversionInputs = (
                     toRate,
                     currencyRef.current?.value
                 );
+
                 let convertedAmount = currencyConverter.getConversion();
                 let objMoney = new Money(convertedAmount.toString());
                 setAmount({ ...amount, value: objMoney.getFormatted() });
             }
         }
-
         return undefined;
     }, [baseAmount, fromCurrency]);
 
