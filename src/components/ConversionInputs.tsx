@@ -24,8 +24,8 @@ const ConversionInputs = (
         cursorPos: 0,
         ref: "",
     });
-    const amountRef = useRef("");
-    const currencyRef = useRef<HTMLInputElement | null>(null);
+    const amountRef = useRef<HTMLInputElement>(null);
+    const currencyRef = useRef<HTMLSelectElement>(null);
     let allowedKeys = Array.from("1234567890.");
     allowedKeys = [
         ...allowedKeys,
@@ -43,7 +43,7 @@ const ConversionInputs = (
 
     // useInputTextPreventKeys(amountRef, allowedKeys);    
 
-    const handleChange = (e: React.FocusEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let eAmount = e.target.value.replaceAll(",", "");
 
         if (moneyIsValid(eAmount)) {
@@ -87,7 +87,7 @@ const ConversionInputs = (
                 baseAmount,
                 fromRate,
                 toRate,
-                currencyRef.current.value
+                currencyRef.current?.value
             );
 
             let convertedAmount = currencyConverter.getConversion();
@@ -97,23 +97,25 @@ const ConversionInputs = (
 
         if (baseAmount !== "") {
             if (!moneyIsValid(amount.value)) {
-                return "";
+                return undefined;
             }
 
             // Convert money inputs except the user is typing
-            if (currencyRef.current.value !== fromCurrency) {
+            if (currencyRef.current?.value !== fromCurrency) {
                 const currencyConverter = new CurrencyConverter(
                     fromCurrency,
                     baseAmount,
                     fromRate,
                     toRate,
-                    currencyRef.current.value
+                    currencyRef.current?.value
                 );
                 let convertedAmount = currencyConverter.getConversion();
                 let objMoney = new Money(convertedAmount.toString());
                 setAmount({ ...amount, value: objMoney.getFormatted() });
             }
         }
+
+        return undefined;
     }, [baseAmount, fromCurrency]);
 
     return (

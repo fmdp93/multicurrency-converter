@@ -6,9 +6,12 @@ export class CurrencyConverter {
     amount: number;
     fromRate: number;
     toRate: number;
-    toCurrency: string;
+    toCurrency: string | undefined;
 
-    constructor(fromCurrency: string, amount: number, fromRate: number, toRate: number, toCurrency: string) {
+    constructor(
+        fromCurrency: string, amount: string,
+          fromRate: number, toRate: number, 
+          toCurrency: string | undefined) {
         this.fromCurrency = fromCurrency;
         this.amount = toFloat(amount);
         this.fromRate = toFloat(fromRate);

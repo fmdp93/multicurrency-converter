@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, MutableRefObject } from "react";
 import { ConvertContextType, CtxConverter } from "./ConverterContext";
 const CURRENCY_INDEX = 0;
 const AMOUNT_INDEX = 1;
 type RatesPropType = {
-    arrayKey?: number, currencyRef?: string, defaultCurrency?: string
+    arrayKey?: number, currencyRef?: React.RefObject<HTMLSelectElement>, defaultCurrency?: string
 }
 const Rates = (
     {
