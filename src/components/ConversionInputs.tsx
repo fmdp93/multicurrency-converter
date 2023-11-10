@@ -8,14 +8,16 @@ import { moneyIsValid } from "../helpers/validation";
 import useInputTextPreventKeys from "../hooks/useInputTextPreventKeys";
 import { signal } from "@preact/signals";
 
-export type ConversionInputType = ({ arrayKey, defaultCurrency }: { arrayKey: number, defaultCurrency: string }) => JSX.Element;
+type ConversionInputPropsType = 
+{ arrayKey: number, defaultCurrency: string };
 
 let mainAmount = signal(0);
 
-const ConversionInputs: ConversionInputType = ({ arrayKey, defaultCurrency }) => {
+const ConversionInputs = (
+    { arrayKey, defaultCurrency }: ConversionInputPropsType) => {
     const { rates, fromCurrency, setFromCurrency,
         baseAmount, setBaseAmount } =
-        useContext<ConvertContextType | any>(CtxConverter)
+        useContext(CtxConverter) as ConvertContextType;
 
     const [amount, setAmount] = useState({
         value: "",
