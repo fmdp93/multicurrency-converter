@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import ConversionInputs, { ConversionInputType } from "./components/ConversionInputs";
+import ConversionInputs from "./components/ConversionInputs";
 import useMoneyApi from "./hooks/useMoneyApi";
 import Rates from "./components/Rates";
 import ConverterContext from "./components/ConverterContext";
@@ -54,14 +54,12 @@ const Home = () => {
                 {rates && (
                     <ConverterContext rates={rates} currency={defaultCurrencies[0]}>
                         {conversionInputsList &&
-                            conversionInputsList.map((input: ConversionInputType) => input)}
+                            conversionInputsList.map((input) => input)}
                         <div className="row-input">
                             <button onClick={handleAddCurrency}>
                                 Add Currency
                             </button>
-                            <Rates
-                                inputRef={optionAddCurrency}
-                            ></Rates>
+                            <Rates></Rates>
                         </div>
                     </ConverterContext>
                 )}
