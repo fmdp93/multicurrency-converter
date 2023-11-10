@@ -3,7 +3,9 @@ import { CtxConverter } from "./ConverterContext";
 const CURRENCY_INDEX = 0;
 const AMOUNT_INDEX = 1;
 
-const Rates = ({ arrayKey, currencyRef, defaultCurrency }) => {
+const Rates = ({ arrayKey, currencyRef, defaultCurrency }: {
+    arrayKey: number, currencyRef: string, defaultCurrency: string
+}) => {
     const { rates } =
         useContext(CtxConverter);
     const [currency, setCurrency] = useState("");
