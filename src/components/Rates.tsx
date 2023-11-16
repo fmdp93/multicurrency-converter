@@ -1,17 +1,30 @@
-import { useState, useEffect, useContext, MutableRefObject } from "react";
+import { useState, useEffect, useContext, MutableRefObject, useRef } from "react";
 import { ConvertContextType, CtxConverter } from "./ConverterContext";
+import { CurrencyConverter } from "../helpers/CurrencyConverter";
+import Money from "../helpers/Money";
+import { ratesToday } from "../../db/money";
+import { amountType } from "./ConversionInputs";
+
 const CURRENCY_INDEX = 0;
 const AMOUNT_INDEX = 1;
 type RatesPropType = {
-    arrayKey?: number, currencyRef?: React.RefObject<HTMLSelectElement>, defaultCurrency?: string
+    arrayKey?: number,
+    currencyRef?: React.RefObject<HTMLSelectElement>,
+    amountRef?: React.RefObject<HTMLInputElement>,
+    amount?: amountType,
+    setAmount?: CallableFunction;
+    defaultCurrency?: string
 }
 const Rates = (
     {
         arrayKey,
+        amount,
+        amountRef,
+        setAmount,
         currencyRef,
         defaultCurrency
     }: RatesPropType) => {
-    const { rates, fromCurrency, setFromCurrency } =
+    const { rates, fromCurrency, setFromCurrency, baseAmount } =
         useContext(CtxConverter) as ConvertContextType
     const [currency, setCurrency] = useState("");
     const [currentCurrency, setCurrentCurrency] = useState("");
@@ -19,10 +32,28 @@ const Rates = (
         // if currency was changed and it is the fromCurrency 
         console.log(currentCurrency);
         console.log(fromCurrency);
-          
-        if(currentCurrency === fromCurrency){
+
+        if (currentCurrency === fromCurrency) {
             // convert all currencies            
             setFromCurrency(currency);
+        } else {            
+            if (amount && setAmount) {                                            
+                let fromRate = ratesToday.rates[fromCurrency];
+                let toRate = ratesToday.rates[currency];
+                
+                const currencyConverter = new CurrencyConverter(
+                    currency,
+                    baseAmount,
+                    fromRate,
+                    toRate,
+                    fromCurrency
+                );
+
+                let convertedAmount = currencyConverter.getConversion();
+                let objMoney = new Money(convertedAmount.toString());
+
+                setAmount({ ...amount, value: objMoney.getFormatted() })
+            }
         }
         // else 
         // convert current currency

@@ -14,6 +14,11 @@ type ConversionInputPropsType =
     { arrayKey: number, defaultCurrency: string };
 
 export let mainAmount = signal("90,000");
+export type amountType = {
+    value: string,
+    cursorPos: number,
+    ref: string,
+}
 
 const ConversionInputs = (
     { arrayKey, defaultCurrency }:
@@ -21,7 +26,7 @@ const ConversionInputs = (
     const { rates, fromCurrency, setFromCurrency,
         baseAmount, setBaseAmount } = useContext(CtxConverter) as ConvertContextType;
 
-    const [amount, setAmount] = useState({
+    const [amount, setAmount] = useState<amountType>({
         value: mainAmount.value,
         cursorPos: 0,
         ref: "",
@@ -148,6 +153,8 @@ const ConversionInputs = (
             <Rates
                 arrayKey={arrayKey}
                 amountRef={amountRef}
+                amount={amount}
+                setAmount={setAmount}
                 currencyRef={currencyRef}
                 defaultCurrency={defaultCurrency}
             ></Rates>
