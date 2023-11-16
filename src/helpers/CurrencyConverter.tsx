@@ -3,9 +3,9 @@ import { toFloat } from "./function";
 export class CurrencyConverter {
     baseCurrency = "EUR";
     fromCurrency: string;
-    amount: number;
-    fromRate: number;
-    toRate: number;
+    amount: number | "";
+    fromRate: number | "";
+    toRate: number | "";
     toCurrency: string | undefined;
 
     constructor(

@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 
-const useInputTextPreventKeys = (inputRef, allowedKeys) => {    
+const useInputTextPreventKeys = (
+    inputRef: React.RefObject<HTMLInputElement>, 
+    allowedKeys: string[]) => {    
     useEffect(()=>{
-        inputRef.current.addEventListener("keydown", function(e){
+        inputRef.current?.addEventListener("keydown", function(e){
             // console.log(e.ctrlKey);
             // console.log(e.metaKey);
             // console.log(e.code);
