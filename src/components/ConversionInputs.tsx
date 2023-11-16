@@ -14,10 +14,10 @@ type ConversionInputPropsType =
 export let mainAmount = signal("90,000");
 
 const ConversionInputs = (
-    { arrayKey, defaultCurrency }: ConversionInputPropsType) => {
+    { arrayKey, defaultCurrency }: 
+    ConversionInputPropsType) => {
     const { rates, fromCurrency, setFromCurrency,
-        baseAmount, setBaseAmount } =
-        useContext(CtxConverter) as ConvertContextType;
+        baseAmount, setBaseAmount } = useContext(CtxConverter) as ConvertContextType;
 
     const [amount, setAmount] = useState({
         value: mainAmount.value,
@@ -70,6 +70,23 @@ const ConversionInputs = (
         // console.log(mainAmount.value++);
     }
 
+
+    function handleDrop(ev: React.DragEvent<HTMLDivElement>) {
+        ev.target.style = "display: flex";        
+    }
+
+    function handleDragEnd(ev: React.DragEvent<HTMLDivElement>) {
+        ev.target.style = "display: flex";        
+    }
+
+    function allowDrop(ev: React.DragEvent<HTMLDivElement>) {
+        ev.preventDefault();
+    }
+
+    function handleDrag(ev: React.DragEvent<HTMLDivElement>) {
+        ev.target.style = "display: none";
+    }
+
     useEffect(() => {
         if (baseAmount !== "") {
             let fromRate = ratesToday.rates[fromCurrency];
@@ -98,7 +115,11 @@ const ConversionInputs = (
     }, [baseAmount, fromCurrency]);
 
     return (
-        <div className="row-input">
+        <div className="row-input" draggable="true"
+            onDrag={(ev) => handleDrag(ev)}
+            onDragEnd={(ev) => handleDragEnd(ev)}
+            onDrop={(ev) => handleDrop(ev)}            
+            onDragOver={(ev) => allowDrop(ev)}>
             <input
                 type="text"
                 className="currencyValue"
@@ -113,7 +134,6 @@ const ConversionInputs = (
                 currencyRef={currencyRef}
                 defaultCurrency={defaultCurrency}
             ></Rates>
-            <button className="to-top" onClick={handleToTopClick}>&nbsp;</button>
         </div>
     );
 };
