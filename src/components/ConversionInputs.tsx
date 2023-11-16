@@ -6,7 +6,9 @@ import { CurrencyConverter } from "../helpers/CurrencyConverter";
 import Money from "../helpers/Money";
 import { moneyIsValid } from "../helpers/validation";
 import useInputTextPreventKeys from "../hooks/useInputTextPreventKeys";
-import { signal } from "@preact/signals";
+import { Signal, signal } from "@preact/signals";
+
+export let lastModifiedTextInput = signal<React.RefObject<HTMLInputElement> | null>(null);
 
 type ConversionInputPropsType =
     { arrayKey: number, defaultCurrency: string };
@@ -14,8 +16,8 @@ type ConversionInputPropsType =
 export let mainAmount = signal("90,000");
 
 const ConversionInputs = (
-    { arrayKey, defaultCurrency }: 
-    ConversionInputPropsType) => {
+    { arrayKey, defaultCurrency }:
+        ConversionInputPropsType) => {
     const { rates, fromCurrency, setFromCurrency,
         baseAmount, setBaseAmount } = useContext(CtxConverter) as ConvertContextType;
 
@@ -47,6 +49,10 @@ const ConversionInputs = (
         let eAmount = e.target.value.replaceAll(",", "");
 
         if (moneyIsValid(eAmount)) {
+            // update background color
+            lastModifiedTextInput.value?.current?.classList.remove('input-primary');
+            e.target.classList.add("input-primary");
+            lastModifiedTextInput.value = amountRef;
             setAmount({ ...amount, value: eAmount });
             mainAmount.value = eAmount;
             setBaseAmount(eAmount);
@@ -72,15 +78,15 @@ const ConversionInputs = (
 
 
     function handleDrop(ev: React.DragEvent<HTMLDivElement>) {
-        if(ev.target instanceof HTMLDivElement){            
+        if (ev.target instanceof HTMLDivElement) {
             ev.target.style.setProperty("display", "flex")
         }
     }
 
     function handleDragEnd(ev: React.DragEvent<HTMLDivElement>) {
-        if(ev.target instanceof HTMLDivElement){            
+        if (ev.target instanceof HTMLDivElement) {
             ev.target.style.setProperty("display", "flex")
-        }       
+        }
     }
 
     function allowDrop(ev: React.DragEvent<HTMLDivElement>) {
@@ -88,7 +94,7 @@ const ConversionInputs = (
     }
 
     function handleDrag(ev: React.DragEvent<HTMLDivElement>) {
-        if(ev.target instanceof HTMLDivElement){            
+        if (ev.target instanceof HTMLDivElement) {
             ev.target.style.setProperty("display", "none")
         }
     }
@@ -115,6 +121,10 @@ const ConversionInputs = (
                 let convertedAmount = currencyConverter.getConversion();
                 let objMoney = new Money(convertedAmount.toString());
                 setAmount({ ...amount, value: objMoney.getFormatted() });
+            } else {
+                // set first input as input-primary (amountFrom)
+                lastModifiedTextInput.value = amountRef;
+                lastModifiedTextInput.value.current?.classList.add("input-primary");
             }
         }
         return undefined;
@@ -124,7 +134,7 @@ const ConversionInputs = (
         <div className="row-input" draggable="true"
             onDrag={(ev) => handleDrag(ev)}
             onDragEnd={(ev) => handleDragEnd(ev)}
-            onDrop={(ev) => handleDrop(ev)}            
+            onDrop={(ev) => handleDrop(ev)}
             onDragOver={(ev) => allowDrop(ev)}>
             <input
                 type="text"
@@ -137,6 +147,7 @@ const ConversionInputs = (
             />
             <Rates
                 arrayKey={arrayKey}
+                amountRef={amountRef}
                 currencyRef={currencyRef}
                 defaultCurrency={defaultCurrency}
             ></Rates>
