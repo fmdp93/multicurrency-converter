@@ -11,16 +11,28 @@ const Rates = (
         currencyRef,
         defaultCurrency
     }: RatesPropType) => {
-    const { rates } =
+    const { rates, fromCurrency, setFromCurrency } =
         useContext(CtxConverter) as ConvertContextType
     const [currency, setCurrency] = useState("");
-
+    const [currentCurrency, setCurrentCurrency] = useState("");
     const handleChange = (currency: string) => {
+        // if currency was changed and it is the fromCurrency 
+        console.log(currentCurrency);
+        console.log(fromCurrency);
+          
+        if(currentCurrency === fromCurrency){
+            // convert all currencies            
+            setFromCurrency(currency);
+        }
+        // else 
+        // convert current currency
+
         setCurrency(currency);
     };
 
     useEffect(() => {
-    }, [rates])
+        setCurrentCurrency(currencyRef?.current?.value as string);        
+    }, [rates, currency, fromCurrency])
     return (
         <>
             <select
