@@ -72,11 +72,15 @@ const ConversionInputs = (
 
 
     function handleDrop(ev: React.DragEvent<HTMLDivElement>) {
-        ev.target.style = "display: flex";        
+        if(ev.target instanceof HTMLDivElement){            
+            ev.target.style.setProperty("display", "flex")
+        }
     }
 
     function handleDragEnd(ev: React.DragEvent<HTMLDivElement>) {
-        ev.target.style = "display: flex";        
+        if(ev.target instanceof HTMLDivElement){            
+            ev.target.style.setProperty("display", "flex")
+        }       
     }
 
     function allowDrop(ev: React.DragEvent<HTMLDivElement>) {
@@ -84,7 +88,9 @@ const ConversionInputs = (
     }
 
     function handleDrag(ev: React.DragEvent<HTMLDivElement>) {
-        ev.target.style = "display: none";
+        if(ev.target instanceof HTMLDivElement){            
+            ev.target.style.setProperty("display", "none")
+        }
     }
 
     useEffect(() => {
