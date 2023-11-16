@@ -3,9 +3,9 @@ import { toFloat } from "./function";
 export class CurrencyConverter {
     baseCurrency = "EUR";
     fromCurrency: string;
-    amount: number | "";
-    fromRate: number | "";
-    toRate: number | "";
+    amount: number;
+    fromRate: number;
+    toRate: number;
     toCurrency: string | undefined;
 
     constructor(
@@ -13,9 +13,9 @@ export class CurrencyConverter {
           fromRate: number, toRate: number, 
           toCurrency: string | undefined) {
         this.fromCurrency = fromCurrency;
-        this.amount = toFloat(amount);
-        this.fromRate = toFloat(fromRate);
-        this.toRate = toFloat(toRate);
+        this.amount = toFloat(amount) || 0;
+        this.fromRate = fromRate;
+        this.toRate = toRate;
         this.toCurrency = toCurrency;
     }
 
