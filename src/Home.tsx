@@ -4,11 +4,11 @@ import useMoneyApi from "./hooks/useMoneyApi";
 import Rates from "./components/Rates";
 import ConverterContext from "./components/ConverterContext";
 import { effect, signal } from "@preact/signals";
-import { Helmet } from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 export let inputs = signal<Array<JSX.Element> | null>(null);
 
-const Home = () => {
+const Home = () => {    
     const defaultCurrencies = ["PHP", "USD", "EUR"];
     const [rates, setRates] = useState<[] | null>(null);
 
@@ -35,17 +35,14 @@ const Home = () => {
         setInputSize(inputSize + 1);
     };
 
-    effect(()=>{
-        if (rates) {            
-            inputs.value = getInputs(inputSize);                 
+    effect(() => {
+        if (rates) {
+            inputs.value = getInputs(inputSize);
         }
     });
 
     return (
         <div className="page-home">
-            <Helmet>
-                <title>{`${document.title} | Home`}</title>
-            </Helmet>
             <h1>Multi Currency Converter</h1>
             <div className="converter">
                 {rates && (
