@@ -3,6 +3,9 @@ import ConversionInputs from "./components/ConversionInputs";
 import useMoneyApi from "./hooks/useMoneyApi";
 import Rates from "./components/Rates";
 import ConverterContext from "./components/ConverterContext";
+import { effect, signal } from "@preact/signals";
+
+export let inputs = signal<Array<JSX.Element> | null>(null);
 
 const Home = () => {
     const CURRENCY_1 = "PHP";
@@ -40,12 +43,11 @@ const Home = () => {
         setInputSize(inputSize + 1);
     };
 
-    useEffect(() => {
-        if (rates) {
-            setConversionInputsList(getInputs(inputSize));
+    effect(()=>{
+        if (rates) {            
+            inputs.value = getInputs(inputSize);                 
         }
-
-    }, [rates, inputSize]);
+    });
 
     return (
         <div className="page-home">
@@ -53,8 +55,8 @@ const Home = () => {
             <div className="converter">
                 {rates && (
                     <ConverterContext rates={rates} currency={defaultCurrencies[0]}>
-                        {conversionInputsList &&
-                            conversionInputsList.map((input) => input)}
+                        {inputs.value &&
+                            inputs.value.map((input) => input)}
                         <div className="row-input">
                             <button onClick={handleAddCurrency}>
                                 Add Currency
