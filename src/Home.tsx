@@ -4,6 +4,7 @@ import useMoneyApi from "./hooks/useMoneyApi";
 import Rates from "./components/Rates";
 import ConverterContext from "./components/ConverterContext";
 import { effect, signal } from "@preact/signals";
+import { Helmet } from "react-helmet";
 
 export let inputs = signal<Array<JSX.Element> | null>(null);
 
@@ -42,6 +43,9 @@ const Home = () => {
 
     return (
         <div className="page-home">
+            <Helmet>
+                <title>{`${document.title} | Home`}</title>
+            </Helmet>
             <h1>Multi Currency Converter</h1>
             <div className="converter">
                 {rates && (
