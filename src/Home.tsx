@@ -8,19 +8,10 @@ import { effect, signal } from "@preact/signals";
 export let inputs = signal<Array<JSX.Element> | null>(null);
 
 const Home = () => {
-    const CURRENCY_1 = "PHP";
-    const CURRENCY_2 = "USD";
-    const CURRENCY_3 = "EUR";
-
-    const defaultCurrencies = [CURRENCY_1, CURRENCY_2, CURRENCY_3];
+    const defaultCurrencies = ["PHP", "USD", "EUR"];
     const [rates, setRates] = useState<[] | null>(null);
 
     const [inputSize, setInputSize] = useState(3);
-    const [
-        conversionInputsList,
-        setConversionInputsList
-    ] = useState<Array<JSX.Element> | null>(null);
-    const optionAddCurrency = useRef(null);
 
     useMoneyApi(setRates);
 
