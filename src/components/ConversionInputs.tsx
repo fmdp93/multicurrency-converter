@@ -24,7 +24,7 @@ const ConversionInputs = (
     { arrayKey, defaultCurrency }:
         ConversionInputPropsType) => {
     const { rates, fromCurrency, setFromCurrency,
-        baseAmount, setBaseAmount } = useContext(CtxConverter) as ConvertContextType;
+        baseAmount, setBaseAmount, wasInitialized, setWasInitialized } = useContext(CtxConverter) as ConvertContextType;
 
     const [amount, setAmount] = useState<amountType>({
         value: mainAmount.value,
@@ -58,6 +58,7 @@ const ConversionInputs = (
             lastModifiedTextInput.value?.current?.classList.remove('input-primary');
             e.target.classList.add("input-primary");
             lastModifiedTextInput.value = amountRef;
+
             setAmount({ ...amount, value: eAmount });
             mainAmount.value = eAmount;
             setBaseAmount(eAmount);
@@ -126,10 +127,13 @@ const ConversionInputs = (
                 let convertedAmount = currencyConverter.getConversion();
                 let objMoney = new Money(convertedAmount.toString());
                 setAmount({ ...amount, value: objMoney.getFormatted() });
-            } else {
+            } 
+            
+            if(arrayKey === 0 && wasInitialized === false){
                 // set first input as input-primary (amountFrom)
                 lastModifiedTextInput.value = amountRef;
                 lastModifiedTextInput.value.current?.classList.add("input-primary");
+                setWasInitialized(true);
             }
         }
         return undefined;

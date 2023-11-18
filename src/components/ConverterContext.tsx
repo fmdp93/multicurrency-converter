@@ -8,6 +8,8 @@ export type ConvertContextType = {
     setFromCurrency: Dispatch<SetStateAction<string>>,
     baseAmount: string,
     setBaseAmount: Dispatch<SetStateAction<string>>,
+    wasInitialized: boolean,    
+    setWasInitialized: Dispatch<SetStateAction<boolean>>,
 }
 
 export const CtxConverter = createContext<ConvertContextType | null>(null);
@@ -18,6 +20,7 @@ const ConverterContext = ({children, currency, rates}: {
     useContext(CtxConverter);
     const [fromCurrency, setFromCurrency] = useState<string>(currency);
     const [baseAmount, setBaseAmount] = useState(mainAmount.value);
+    const [wasInitialized, setWasInitialized] = useState(false);
 
     const contextVal: ConvertContextType = {
         rates,
@@ -25,6 +28,8 @@ const ConverterContext = ({children, currency, rates}: {
         setFromCurrency,
         baseAmount,
         setBaseAmount,
+        wasInitialized,
+        setWasInitialized
     };
     
     useEffect(()=>{
