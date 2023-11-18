@@ -115,7 +115,11 @@ const ConversionInputs = (
             }
 
             // Convert money inputs except the user is typing
-            if (currencyRef.current?.value !== fromCurrency) {
+            if (amountRef.current?.parentElement
+                ?.getAttribute("data-key")
+                !==
+                lastModifiedTextInput.value?.current?.parentElement
+                ?.getAttribute("data-key")) {
                 const currencyConverter = new CurrencyConverter(
                     fromCurrency,
                     baseAmount,
@@ -127,9 +131,9 @@ const ConversionInputs = (
                 let convertedAmount = currencyConverter.getConversion();
                 let objMoney = new Money(convertedAmount.toString());
                 setAmount({ ...amount, value: objMoney.getFormatted() });
-            } 
-            
-            if(arrayKey === 0 && wasInitialized === false){
+            }
+
+            if (arrayKey === 0 && wasInitialized === false) {
                 // set first input as input-primary (amountFrom)
                 lastModifiedTextInput.value = amountRef;
                 lastModifiedTextInput.value.current?.classList.add("input-primary");
@@ -141,6 +145,7 @@ const ConversionInputs = (
 
     return (
         <div className="row-input" draggable="true"
+            data-key={arrayKey}
             onDrag={(ev) => handleDrag(ev)}
             onDragEnd={(ev) => handleDragEnd(ev)}
             onDrop={(ev) => handleDrop(ev)}
