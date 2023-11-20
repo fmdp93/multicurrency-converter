@@ -1,6 +1,7 @@
 .page-home{
     .currencyValue {
         margin-bottom: 1rem;
+        text-align: right;
     }
     .currency {
         margin-left: 1rem;
@@ -14,8 +15,5 @@
         :first-child {
             width: 100%;
         }
-    }
-    input[type="text"]{
-        text-align: right;
     }
 }
