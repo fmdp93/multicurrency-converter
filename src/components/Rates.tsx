@@ -4,7 +4,7 @@ import { CurrencyConverter } from "../helpers/CurrencyConverter";
 import Money from "../helpers/Money";
 import { ratesToday } from "../../db/money";
 import { amountType } from "./ConversionInputs";
-
+import { DragDrop } from "../helpers/DragDrop";
 const CURRENCY_INDEX = 0;
 const AMOUNT_INDEX = 1;
 type RatesPropType = {
@@ -12,17 +12,16 @@ type RatesPropType = {
     currencyRef?: React.RefObject<HTMLSelectElement>,
     amountRef?: React.RefObject<HTMLInputElement>,
     amount?: amountType,
-    setAmount?: CallableFunction;
-    defaultCurrency?: string
+    setAmount?: CallableFunction,
+    defaultCurrency?: string,
+    objDragDrop?: DragDrop | null,
 }
 const Rates = (
     {
         arrayKey,
-        amount,
-        amountRef,
-        setAmount,
-        currencyRef,
-        defaultCurrency
+        amount, amountRef, setAmount,
+        currencyRef, defaultCurrency,
+        objDragDrop,
     }: RatesPropType) => {
     const { rates, fromCurrency, setFromCurrency, baseAmount } =
         useContext(CtxConverter) as ConvertContextType
@@ -30,17 +29,15 @@ const Rates = (
     const [currentCurrency, setCurrentCurrency] = useState("");
     const handleChange = (currency: string) => {
         // if currency was changed and it is the fromCurrency 
-        console.log(currentCurrency);
-        console.log(fromCurrency);
 
         if (currentCurrency === fromCurrency) {
             // convert all currencies            
             setFromCurrency(currency);
-        } else {            
-            if (amount && setAmount) {                                            
+        } else {
+            if (amount && setAmount) {
                 let fromRate = ratesToday.rates[fromCurrency];
                 let toRate = ratesToday.rates[currency];
-                
+
                 const currencyConverter = new CurrencyConverter(
                     currency,
                     baseAmount,
@@ -62,7 +59,7 @@ const Rates = (
     };
 
     useEffect(() => {
-        setCurrentCurrency(currencyRef?.current?.value as string);        
+        setCurrentCurrency(currencyRef?.current?.value as string);
     }, [rates, currency, fromCurrency])
     return (
         <>

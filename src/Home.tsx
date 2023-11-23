@@ -1,23 +1,27 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ConversionInputs from "./components/ConversionInputs";
 import useMoneyApi from "./hooks/useMoneyApi";
 import Rates from "./components/Rates";
 import ConverterContext from "./components/ConverterContext";
-import { effect, signal } from "@preact/signals";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { DragDrop } from "./helpers/DragDrop";
+import Test from "./components/Test";
+import useStrictModeLogger from "./hooks/useStrictModeLogger";
 
-export let inputs = signal<Array<JSX.Element> | null>(null);
-
-const Home = () => {    
+const Home = () => {
     const defaultCurrencies = ["PHP", "USD", "EUR"];
     const [rates, setRates] = useState<[] | null>(null);
-
+    // let objDragDrop = useMemo<DragDrop | null>(()=>{  
+    //     return null;      
+    // }, []);
+    const [stateInputs, setStateInputs] = useState<JSX.Element[] | null>(null);
+    const [objDragDrop, setObjDragDrop] = useState(new DragDrop);
     const [inputSize, setInputSize] = useState(3);
 
     useMoneyApi(setRates);
 
-    function getInputs(inputSize: number): Array<JSX.Element> {
-        let inputs: Array<JSX.Element> = [];
+    function getInputs<T>(inputSize: number): Array<T> {
+        let inputs: Array<T> = [];
         for (let i = 0; i < inputSize; i++) {
             inputs = [
                 ...inputs,
@@ -25,7 +29,9 @@ const Home = () => {
                     key={i}
                     arrayKey={i}
                     defaultCurrency={defaultCurrencies[i]}
-                ></ConversionInputs>,
+                    objDragDrop={objDragDrop}
+                    setStateInputs={setStateInputs}
+                ></ConversionInputs> as T,
             ];
         }
         return inputs;
@@ -34,21 +40,26 @@ const Home = () => {
     const handleAddCurrency = () => {
         setInputSize(inputSize + 1);
     };
-
-    effect(() => {
+    useStrictModeLogger();
+    useEffect(() => {
         if (rates) {
-            inputs.value = getInputs(inputSize);
+            if (stateInputs === null) {
+                setStateInputs(getInputs<JSX.Element>(inputSize));
+            }
         }
-    });
+    }, [rates, inputSize, stateInputs, objDragDrop])
 
     return (
         <div className="page-home">
             <h1>Multi Currency Converter</h1>
             <div className="converter">
                 {rates && (
-                    <ConverterContext rates={rates} currency={defaultCurrencies[0]}>
-                        {inputs.value &&
-                            inputs.value.map((input) => input)}
+                    <ConverterContext
+                        rates={rates}
+                        currency={defaultCurrencies[0]}
+                    >
+                        {stateInputs &&
+                            stateInputs.map((input) => input)}
                         <div className="row-input">
                             <button onClick={handleAddCurrency}>
                                 Add Currency

@@ -7,11 +7,17 @@ import Money from "../helpers/Money";
 import { moneyIsValid } from "../helpers/validation";
 import useInputTextPreventKeys from "../hooks/useInputTextPreventKeys";
 import { Signal, signal } from "@preact/signals";
+import { DragDrop } from "../helpers/DragDrop";
 
 export let lastModifiedTextInput = signal<React.RefObject<HTMLInputElement> | null>(null);
 
 type ConversionInputPropsType =
-    { arrayKey: number, defaultCurrency: string };
+    {
+        arrayKey: number,
+        defaultCurrency: string,
+        objDragDrop?: DragDrop | null,
+        setStateInputs: React.Dispatch<React.SetStateAction<JSX.Element[] | null>>,
+    };
 
 export let mainAmount = signal("90,000");
 export type amountType = {
@@ -21,10 +27,15 @@ export type amountType = {
 }
 
 const ConversionInputs = (
-    { arrayKey, defaultCurrency }:
+    { arrayKey, defaultCurrency,
+        objDragDrop,
+        setStateInputs,
+    }:
         ConversionInputPropsType) => {
     const { rates, fromCurrency, setFromCurrency,
-        baseAmount, setBaseAmount, wasInitialized, setWasInitialized } = useContext(CtxConverter) as ConvertContextType;
+        baseAmount, setBaseAmount,
+        wasInitialized, setWasInitialized } =
+        useContext(CtxConverter) as ConvertContextType;
 
     const [amount, setAmount] = useState<amountType>({
         value: mainAmount.value,
@@ -36,10 +47,7 @@ const ConversionInputs = (
     let allowedKeys = Array.from("1234567890.");
     allowedKeys = [
         ...allowedKeys,
-        "ArrowUp",
-        "ArrowDown",
-        "ArrowLeft",
-        "ArrowRight",
+        "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
         "Backspace",
         "Delete",
         "Tab",
@@ -52,7 +60,6 @@ const ConversionInputs = (
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let eAmount = e.target.value.replaceAll(",", "");
-
         if (moneyIsValid(eAmount)) {
             // update background color
             lastModifiedTextInput.value?.current?.classList.remove('input-primary');
@@ -78,31 +85,44 @@ const ConversionInputs = (
         setAmount({ ...amount, value: amount.value.replace(",", "") });
     }
 
-    const handleToTopClick = () => {
-        // console.log(mainAmount.value++);
-    }
 
+    type swapInputsType = <T>(stateInputs: T[]) => T[];
 
-    function handleDrop(ev: React.DragEvent<HTMLDivElement>) {
-        if (ev.target instanceof HTMLDivElement) {
-            ev.target.style.setProperty("display", "flex")
-        }
-    }
+    function swapInputs() {
+        setStateInputs((stateInputs) => {
+            if (stateInputs) {
+                let holdingItemIndex: number | null = null;
+                let droppedOnItemIndex: number | null = null;
+                let holdingItem: JSX.Element;
+                let droppedOnItem: JSX.Element;
+                stateInputs.forEach((comp: JSX.Element, i: number) => {
+                    if (stateInputs[i].props.arrayKey === objDragDrop?.holdingElKey) {
+                        holdingItem = stateInputs[i];
+                        holdingItemIndex = i;
+                    }
+                    if (stateInputs[i].props.arrayKey === objDragDrop?.dropOnRowElKey) {
+                        droppedOnItem = stateInputs[i];
+                        droppedOnItemIndex = i;
+                    }
+                })
 
-    function handleDragEnd(ev: React.DragEvent<HTMLDivElement>) {
-        if (ev.target instanceof HTMLDivElement) {
-            ev.target.style.setProperty("display", "flex")
-        }
-    }
+                if (holdingItemIndex === null || droppedOnItemIndex === null) {
+                    return stateInputs;
+                }
 
-    function allowDrop(ev: React.DragEvent<HTMLDivElement>) {
-        ev.preventDefault();
-    }
+                return stateInputs.map((comp: JSX.Element, i: number) => {
+                    if (i === holdingItemIndex) {
+                        return droppedOnItem;
+                    }
+                    if (i === droppedOnItemIndex) {
+                        return holdingItem;
+                    }
+                    return comp;
+                })
+            }
 
-    function handleDrag(ev: React.DragEvent<HTMLDivElement>) {
-        if (ev.target instanceof HTMLDivElement) {
-            ev.target.style.setProperty("display", "none")
-        }
+            return [] as JSX.Element[];
+        })
     }
 
     useEffect(() => {
@@ -119,7 +139,7 @@ const ConversionInputs = (
                 ?.getAttribute("data-key")
                 !==
                 lastModifiedTextInput.value?.current?.parentElement
-                ?.getAttribute("data-key")) {
+                    ?.getAttribute("data-key")) {
                 const currencyConverter = new CurrencyConverter(
                     fromCurrency,
                     baseAmount,
@@ -146,10 +166,18 @@ const ConversionInputs = (
     return (
         <div className="row-input" draggable="true"
             data-key={arrayKey}
-            onDrag={(ev) => handleDrag(ev)}
-            onDragEnd={(ev) => handleDragEnd(ev)}
-            onDrop={(ev) => handleDrop(ev)}
-            onDragOver={(ev) => allowDrop(ev)}>
+            onDrag={(ev) => { objDragDrop?.drag(ev) }}
+            onDrop={(ev) => {
+                objDragDrop?.drop(ev);
+                swapInputs();
+            }}
+            onDragOver={(ev) => objDragDrop?.allowDrop(ev)}
+            onDragEnd={(ev) => {
+                if (ev.target instanceof HTMLDivElement) {
+                    ev.target.style.setProperty("display", "flex");
+                }
+            }}
+        >
             <input
                 type="text"
                 className="currencyValue"
@@ -166,6 +194,7 @@ const ConversionInputs = (
                 setAmount={setAmount}
                 currencyRef={currencyRef}
                 defaultCurrency={defaultCurrency}
+            // objDragDrop={objDragDrop}
             ></Rates>
         </div>
     );
