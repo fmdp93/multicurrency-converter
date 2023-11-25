@@ -8,8 +8,6 @@ import { moneyIsValid } from "../helpers/validation";
 import useInputTextPreventKeys from "../hooks/useInputTextPreventKeys";
 import { Signal, signal } from "@preact/signals";
 import { DragDrop } from "../helpers/DragDrop";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { ElementKeySwapper } from "../helpers/ElementKeySwapper";
 
 export let lastModifiedTextInput = signal<React.RefObject<HTMLInputElement> | null>(null);
@@ -169,8 +167,7 @@ const ConversionInputs = (
                 setAmount={setAmount}
                 currencyRef={currencyRef}
                 defaultCurrency={defaultCurrency}            
-            ></Rates>
-            <FontAwesomeIcon icon={faEnvelope} />
+            ></Rates>            
         </div>
     );
 };
