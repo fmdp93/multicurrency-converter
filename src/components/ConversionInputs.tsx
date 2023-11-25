@@ -154,6 +154,7 @@ const ConversionInputs = (
         >
             <input
                 type="text"
+                name="amount[]"
                 className="currencyValue"
                 value={amount.value}
                 onChange={(e) => handleChange(e)}

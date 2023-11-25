@@ -64,6 +64,7 @@ const Rates = (
     return (
         <>
             <select
+                name="rate[]"
                 className="currency"
                 onChange={(e) => handleChange(e.target.value)}
                 ref={currencyRef}
