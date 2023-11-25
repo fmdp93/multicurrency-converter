@@ -10,6 +10,7 @@ import { Signal, signal } from "@preact/signals";
 import { DragDrop } from "../helpers/DragDrop";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { ElementKeySwapper } from "../helpers/ElementKeySwapper";
 
 export let lastModifiedTextInput = signal<React.RefObject<HTMLInputElement> | null>(null);
 
@@ -87,43 +88,14 @@ const ConversionInputs = (
         setAmount({ ...amount, value: amount.value.replace(",", "") });
     }
 
-
-    type swapInputsType = <T>(stateInputs: T[]) => T[];
-
     function swapInputs() {
         setStateInputs((stateInputs) => {
-            if (stateInputs) {
-                let holdingItemIndex: number | null = null;
-                let droppedOnItemIndex: number | null = null;
-                let holdingItem: JSX.Element;
-                let droppedOnItem: JSX.Element;
-                stateInputs.forEach((comp: JSX.Element, i: number) => {
-                    if (stateInputs[i].props.arrayKey === objDragDrop?.holdingElKey) {
-                        holdingItem = stateInputs[i];
-                        holdingItemIndex = i;
-                    }
-                    if (stateInputs[i].props.arrayKey === objDragDrop?.dropOnRowElKey) {
-                        droppedOnItem = stateInputs[i];
-                        droppedOnItemIndex = i;
-                    }
-                })
-
-                if (holdingItemIndex === null || droppedOnItemIndex === null) {
-                    return stateInputs;
-                }
-
-                return stateInputs.map((comp: JSX.Element, i: number) => {
-                    if (i === holdingItemIndex) {
-                        return droppedOnItem;
-                    }
-                    if (i === droppedOnItemIndex) {
-                        return holdingItem;
-                    }
-                    return comp;
-                })
-            }
-
-            return [] as JSX.Element[];
+            const objElementKeySwapper = new ElementKeySwapper({
+                elements: stateInputs,
+                holdingItemAttKey: objDragDrop?.holdingElKey as number,
+                droppedOnItemAttKey: objDragDrop?.dropOnRowElKey as number,
+            })                        
+            return objElementKeySwapper.swap();
         })
     }
 
