@@ -5,7 +5,6 @@ import Rates from "./components/Rates";
 import ConverterContext from "./components/ConverterContext";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { DragDrop } from "./helpers/DragDrop";
-import Test from "./components/Test";
 import useStrictModeLogger from "./hooks/useStrictModeLogger";
 
 const Home = () => {
@@ -40,7 +39,6 @@ const Home = () => {
     const handleAddCurrency = () => {
         setInputSize(inputSize + 1);
     };
-    useStrictModeLogger();
     useEffect(() => {
         if (rates) {
             if (stateInputs === null) {
