@@ -1,7 +1,7 @@
 import { toFloat } from "./function";
 
 export class CurrencyConverter {
-    baseCurrency = "EUR";
+    baseCurrency = "USD";
     fromCurrency: string;
     amount: number;
     fromRate: number;

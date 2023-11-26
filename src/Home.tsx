@@ -9,7 +9,6 @@ import useStrictModeLogger from "./hooks/useStrictModeLogger";
 
 const Home = () => {
     const defaultCurrencies = ["PHP", "USD", "AUD", "EUR"];
-    const [rates, setRates] = useState<[] | null>(null);
     // let objDragDrop = useMemo<DragDrop | null>(()=>{  
     //     return null;      
     // }, []);
@@ -17,7 +16,7 @@ const Home = () => {
     const [objDragDrop, setObjDragDrop] = useState(new DragDrop);
     const [inputSize, setInputSize] = useState(defaultCurrencies.length);
 
-    useMoneyApi(setRates);
+    const {sRates, moneyError} = useMoneyApi();
 
     function getInputs<T>(inputSize: number): Array<T> {
         let inputs: Array<T> = [];
@@ -40,18 +39,18 @@ const Home = () => {
         setInputSize(inputSize + 1);
     };
     useEffect(() => {
-        if (rates) {
+        if (sRates) {
             setStateInputs(getInputs<JSX.Element>(inputSize));
         }
-    }, [rates, inputSize, objDragDrop])
+    }, [inputSize, objDragDrop, sRates])
 
     return (
-        <div className="page-home">
+        <div className="page-home">            
             <h1>Multi Currency Converter</h1>
             <div className="converter">
-                {rates && (
+                {sRates && (                    
                     <ConverterContext
-                        rates={rates}
+                        sRates={sRates}
                         currency={defaultCurrencies[0]}
                     >
                         {stateInputs &&

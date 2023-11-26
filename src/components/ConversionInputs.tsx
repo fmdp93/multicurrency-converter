@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import Rates from "./Rates";
-import { ratesToday } from "../../db/money";
+import { latestCurrencyApiResponse } from "../../db/money";
 import { CtxConverter, ConvertContextType } from "./ConverterContext";
 import { CurrencyConverter } from "../helpers/CurrencyConverter";
 import Money from "../helpers/Money";
@@ -33,14 +33,13 @@ const ConversionInputs = (
         setStateInputs,
     }: ConversionInputPropsType) => {
     const ctxConverter = useContext(CtxConverter);
-    if(ctxConverter === null){
+    if (ctxConverter === null) {
         return;
     }
 
-    const { rates, fromCurrency, setFromCurrency,
+    const { sRates, fromCurrency, setFromCurrency,
         baseAmount, setBaseAmount,
         wasInitialized, setWasInitialized } = ctxConverter;
-        
 
     const [amount, setAmount] = useState<amountType>({
         value: mainAmount.value,
@@ -96,15 +95,18 @@ const ConversionInputs = (
                 elements: stateInputs,
                 holdingItemAttKey: objDragDrop.holdingElKey as number,
                 droppedOnItemAttKey: objDragDrop.dropOnRowElKey as number,
-            })                        
+            })
             return objElementKeySwapper.swap();
         })
     }
 
     useEffect(() => {
         if (baseAmount !== "") {
-            let fromRate = ratesToday.rates[fromCurrency];
-            let toRate = ratesToday.rates[currencyRef.current?.value as string];
+            let fromRate = sRates.filter(
+                i => i[0] === fromCurrency)[0][1];
+
+            let toRate = sRates.filter(
+                i => i[0] === currencyRef.current?.value as string)[0][1];
 
             if (!moneyIsValid(amount.value)) {
                 return undefined;
@@ -170,8 +172,8 @@ const ConversionInputs = (
                 amount={amount}
                 setAmount={setAmount}
                 currencyRef={currencyRef}
-                defaultCurrency={defaultCurrency}            
-            ></Rates>            
+                defaultCurrency={defaultCurrency}
+            ></Rates>
         </div>
     );
 };

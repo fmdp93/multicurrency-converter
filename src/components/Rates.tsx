@@ -1,8 +1,7 @@
 import { useState, useEffect, useContext, MutableRefObject, useRef } from "react";
-import { ConvertContextType, CtxConverter } from "./ConverterContext";
+import { CtxConverter } from "./ConverterContext";
 import { CurrencyConverter } from "../helpers/CurrencyConverter";
 import Money from "../helpers/Money";
-import { ratesToday } from "../../db/money";
 import { amountType } from "./ConversionInputs";
 import { DragDrop } from "../helpers/DragDrop";
 const CURRENCY_INDEX = 0;
@@ -28,7 +27,7 @@ const Rates = (
         return;
     }
 
-    const { rates, fromCurrency, setFromCurrency, baseAmount } = ctxConverter;
+    const { sRates: rates, fromCurrency, setFromCurrency, baseAmount } = ctxConverter;
     const [currency, setCurrency] = useState("");
     const [currentCurrency, setCurrentCurrency] = useState("");
     const handleChange = (currency: string) => {
@@ -39,8 +38,8 @@ const Rates = (
             setFromCurrency(currency);
         } else {
             if (amount && setAmount) {
-                let fromRate = ratesToday.rates[fromCurrency];
-                let toRate = ratesToday.rates[currency];
+                let fromRate = rates.filter(i => i[0] === fromCurrency)[0][1];
+                let toRate = rates.filter(i => i[0] === currency)[0][1];
 
                 const currencyConverter = new CurrencyConverter(
                     currency,
@@ -64,7 +63,7 @@ const Rates = (
 
     useEffect(() => {
         setCurrentCurrency(currencyRef?.current?.value as string);
-    }, [rates, currency, fromCurrency])
+    }, [currency, fromCurrency])
     return (
         <>
             <select
@@ -75,7 +74,7 @@ const Rates = (
                 value={currency || defaultCurrency}
             >
                 {rates &&
-                    rates.map((val: string[]) =>
+                    rates.map((val: [string, number]) =>
                     (
                         <option
                             key={val[CURRENCY_INDEX]}
