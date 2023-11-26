@@ -8,14 +8,14 @@ import { DragDrop } from "./helpers/DragDrop";
 import useStrictModeLogger from "./hooks/useStrictModeLogger";
 
 const Home = () => {
-    const defaultCurrencies = ["PHP", "USD", "EUR"];
+    const defaultCurrencies = ["PHP", "USD", "AUD", "EUR"];
     const [rates, setRates] = useState<[] | null>(null);
     // let objDragDrop = useMemo<DragDrop | null>(()=>{  
     //     return null;      
     // }, []);
     const [stateInputs, setStateInputs] = useState<JSX.Element[] | null>(null);
     const [objDragDrop, setObjDragDrop] = useState(new DragDrop);
-    const [inputSize, setInputSize] = useState(3);
+    const [inputSize, setInputSize] = useState(defaultCurrencies.length);
 
     useMoneyApi(setRates);
 
