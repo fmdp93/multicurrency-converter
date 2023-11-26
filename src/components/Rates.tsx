@@ -23,8 +23,12 @@ const Rates = (
         currencyRef, defaultCurrency,
         objDragDrop,
     }: RatesPropType) => {
-    const { rates, fromCurrency, setFromCurrency, baseAmount } =
-        useContext(CtxConverter) as ConvertContextType
+    const ctxConverter = useContext(CtxConverter);
+    if (ctxConverter === null) {
+        return;
+    }
+
+    const { rates, fromCurrency, setFromCurrency, baseAmount } = ctxConverter;
     const [currency, setCurrency] = useState("");
     const [currentCurrency, setCurrentCurrency] = useState("");
     const handleChange = (currency: string) => {

@@ -31,12 +31,16 @@ const ConversionInputs = (
     { arrayKey, defaultCurrency,
         objDragDrop,
         setStateInputs,
-    }:
-        ConversionInputPropsType) => {
+    }: ConversionInputPropsType) => {
+    const ctxConverter = useContext(CtxConverter);
+    if(ctxConverter === null){
+        return;
+    }
+
     const { rates, fromCurrency, setFromCurrency,
         baseAmount, setBaseAmount,
-        wasInitialized, setWasInitialized } =
-        useContext(CtxConverter) as ConvertContextType;
+        wasInitialized, setWasInitialized } = ctxConverter;
+        
 
     const [amount, setAmount] = useState<amountType>({
         value: mainAmount.value,
