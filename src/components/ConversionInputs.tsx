@@ -16,7 +16,7 @@ type ConversionInputPropsType =
     {
         arrayKey: number,
         defaultCurrency: string,
-        objDragDrop?: DragDrop | null,
+        objDragDrop: DragDrop,
         setStateInputs: React.Dispatch<React.SetStateAction<JSX.Element[] | null>>,
     };
 
@@ -94,8 +94,8 @@ const ConversionInputs = (
         setStateInputs((stateInputs) => {
             const objElementKeySwapper = new ElementKeySwapper({
                 elements: stateInputs,
-                holdingItemAttKey: objDragDrop?.holdingElKey as number,
-                droppedOnItemAttKey: objDragDrop?.dropOnRowElKey as number,
+                holdingItemAttKey: objDragDrop.holdingElKey as number,
+                droppedOnItemAttKey: objDragDrop.dropOnRowElKey as number,
             })                        
             return objElementKeySwapper.swap();
         })
@@ -142,12 +142,12 @@ const ConversionInputs = (
     return (
         <div className="row-input" draggable="true"
             data-key={arrayKey}
-            onDrag={(ev) => { objDragDrop?.drag(ev) }}
+            onDrag={(ev) => { objDragDrop.drag(ev) }}
             onDrop={(ev) => {
-                objDragDrop?.drop(ev);
+                objDragDrop.drop(ev);
                 swapInputs();
             }}
-            onDragOver={(ev) => objDragDrop?.allowDrop(ev)}
+            onDragOver={(ev) => objDragDrop.allowDrop(ev)}
             onDragEnd={(ev) => {
                 if (ev.target instanceof HTMLDivElement) {
                     ev.target.style.setProperty("display", "flex");
