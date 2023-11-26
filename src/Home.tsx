@@ -41,11 +41,9 @@ const Home = () => {
     };
     useEffect(() => {
         if (rates) {
-            if (stateInputs === null) {
-                setStateInputs(getInputs<JSX.Element>(inputSize));
-            }
+            setStateInputs(getInputs<JSX.Element>(inputSize));
         }
-    }, [rates, inputSize, stateInputs, objDragDrop])
+    }, [rates, inputSize, objDragDrop])
 
     return (
         <div className="page-home">
