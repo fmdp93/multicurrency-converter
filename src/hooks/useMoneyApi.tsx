@@ -28,7 +28,7 @@ const useMoneyApi = () => {
         const objAbortController = new AbortController();
         const hourNow = (new Date()).getHours();
         const MONEY_KEY = "latest-money-response";
-        let cachedRes = JSON.parse(getItem(MONEY_KEY) ?? "");
+        let cachedRes = JSON.parse(getItem(MONEY_KEY) ?? "{}");
         let setOnDateHour = (new Date(cachedRes?.requestTime).getHours());
 
         if (!cachedRes || (hourNow - setOnDateHour) >= 24) {
