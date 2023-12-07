@@ -16,17 +16,18 @@
             width: 100%;
         }
 
-        &::after {
+        &::before {
             font: var(--fa-font-solid);
-            content: "\f7a4";
-            font-size: 3rem;
+            content: "\f58e";
+            font-size: 4rem;
             cursor: grab;
-            border: 1px solid $text-primary;
-            border-radius: 1rem;
-            padding: 1.5rem;
+            border: 3px solid #606c38;
+            border-radius: 9px;
+            padding: 7px;
+            @include filter-green-1;
         }
         &:last-of-type{
-            &::after {
+            &::before {
                 visibility: hidden;
             }
         }
