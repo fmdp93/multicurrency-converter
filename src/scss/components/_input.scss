@@ -22,6 +22,7 @@ select {
     background-image: url("/src/assets/chevron-down-solid.svg");
     background-repeat: no-repeat;
     background-position: right .75rem center;
+   
     &:focus {
         outline: 3px solid #333;
     }

@@ -8,6 +8,10 @@
 
 @import "scope/home.scss";
 
+*{
+    box-sizing: content-box;
+}
+
 :root {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -43,4 +47,8 @@ nav{
 
 .content {
     padding: 5rem;
+    @include sm{
+        font-size: 1rem;
+        padding: 1rem;
+    }
 }
