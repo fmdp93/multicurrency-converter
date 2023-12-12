@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Nav from "./components/Nav";
+import "normalize.css"
 import "./scss/style.scss"
 import { Helmet, HelmetProvider } from "react-helmet-async";
 function App() {
