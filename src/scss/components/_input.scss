@@ -10,7 +10,7 @@ input[type='text'] {
     }
 }
 
-select {
+select {    
     padding: 1.5rem;
     font-size: 2.8rem;
     border: 1px solid #283618;
@@ -18,6 +18,10 @@ select {
     border-radius: 1rem;
     color: #212529;
     height: fit-content;
+    appearance: none;
+    background-image: url("/src/assets/chevron-down-solid.svg");
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
     &:focus {
         outline: 3px solid #333;
     }
