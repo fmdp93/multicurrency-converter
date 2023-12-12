@@ -1,3 +1,39 @@
 @mixin filter-green-1{
     filter: brightness(0) saturate(100%) invert(38%) sepia(26%) saturate(729%) hue-rotate(33deg) brightness(96%) contrast(85%);
 }
+
+@mixin sm{
+    @media (max-width:  map-get($breakpoints, "sm")){
+        @content;
+    }
+}
+
+@mixin xl{
+    @media (max-width:  map-get($breakpoints, "xl")){
+        @content;
+    }
+}
+
+@mixin fhd{
+    @media (max-width:  map-get($breakpoints, "fhd")){
+        @content;
+    }
+}
+
+@mixin qhd{
+    @media (max-width:  map-get($breakpoints, "qhd")){
+        @content;
+    }
+}
+
+@mixin uhd{
+    @media (max-width:  map-get($breakpoints, "uhd")){
+        @content;
+    }
+}   
+
+@mixin uhd8k{
+    @media (max-width:  map-get($breakpoints, "uhd8k")){
+        @content;
+    }
+}

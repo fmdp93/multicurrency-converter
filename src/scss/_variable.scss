@@ -7,8 +7,18 @@ $tertiary-2: #bc6c25;
 $text-primary: #212529;
 $text-primary-light: #f8f9fa;
 
-$blue: #39A7FF;
-$blue-light: #87C4FF;
-$blue-lighter: #E0F4FF;
+$blue: #39a7ff;
+$blue-light: #87c4ff;
+$blue-lighter: #e0f4ff;
 
-$beige: #FFEED9;
+$beige: #ffeed9;
+
+$breakpoints: (
+    "sm": 576px,
+    "md": 768px,
+    "lg": 992px,
+    "xl": 1200px,
+    "fhd": 1900px,
+    "uhd": 3400px,
+    "uhd8k": 7000px
+);
