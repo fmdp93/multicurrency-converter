@@ -19,5 +19,11 @@ export default defineConfig({
     CODE_OK: 0,
     CODE_PREP : 1,
     CODE_FATAL: 2,
+  },
+  build: {
+    sourcemap: true
+  },
+  css: {
+    devSourcemap: true
   }
 })
