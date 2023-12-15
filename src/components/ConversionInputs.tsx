@@ -9,6 +9,7 @@ import useInputTextPreventKeys from "../hooks/useInputTextPreventKeys";
 import { Signal, signal } from "@preact/signals";
 import { DragDrop } from "../helpers/DragDrop";
 import { ElementKeySwapper } from "../helpers/ElementKeySwapper";
+import { useInitializeFirstConversionInput } from "../hooks/useInitializeFirstConversionInput";
 
 export let lastModifiedTextInput = signal<React.RefObject<HTMLInputElement> | null>(null);
 
@@ -39,7 +40,7 @@ const ConversionInputs = (
 
     const { sRates, fromCurrency, setFromCurrency,
         baseAmount, setBaseAmount,
-        wasInitialized, setWasInitialized } = ctxConverter;
+        } = ctxConverter;
 
     const [amount, setAmount] = useState<amountType>({
         value: mainAmount.value,
@@ -100,6 +101,10 @@ const ConversionInputs = (
         })
     }
 
+    useInitializeFirstConversionInput({
+        arrayKey, lastModifiedTextInput, amountRef
+    });
+
     useEffect(() => {
         if (baseAmount !== "") {
             let fromRate = sRates.filter(
@@ -129,14 +134,7 @@ const ConversionInputs = (
                 let convertedAmount = currencyConverter.getConversion();
                 let objMoney = new Money(convertedAmount.toString());
                 setAmount({ ...amount, value: objMoney.getFormatted() });
-            }
-
-            if (arrayKey === 0 && wasInitialized === false) {
-                // set first input as input-primary (amountFrom)
-                lastModifiedTextInput.value = amountRef;
-                lastModifiedTextInput.value.current?.classList.add("input-primary");
-                setWasInitialized(true);
-            }
+            }       
         }
         return undefined;
     }, [baseAmount, fromCurrency]);
