@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import Rates from "./Rates";
 import { latestCurrencyApiResponse } from "../../db/money";
-import { CtxConverter, ConvertContextType } from "./ConverterContext";
+import { CtxConverter, ConvertContextType } from "../context/ConverterContext";
 import { CurrencyConverter } from "../helpers/CurrencyConverter";
 import Money from "../helpers/Money";
 import { moneyIsValid } from "../helpers/validation";

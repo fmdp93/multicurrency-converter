@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, MutableRefObject, useRef } from "react";
-import { CtxConverter } from "./ConverterContext";
+import { CtxConverter } from "../context/ConverterContext";
 import { CurrencyConverter } from "../helpers/CurrencyConverter";
 import Money from "../helpers/Money";
 import { amountType } from "./ConversionInputs";

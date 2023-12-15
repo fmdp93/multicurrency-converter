@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, Dispatch, SetStateAction } from "react";
-import { mainAmount } from "./ConversionInputs";
+import { mainAmount } from "../components/ConversionInputs";
 
 export type ConvertContextType = {
     sRates: [string, number][],

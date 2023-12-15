@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import ConversionInputs from "./components/ConversionInputs";
 import useMoneyApi from "./hooks/useMoneyApi";
 import Rates from "./components/Rates";
-import ConverterContext from "./components/ConverterContext";
+import ConverterContext from "./context/ConverterContext";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { DragDrop } from "./helpers/DragDrop";
 import useStrictModeLogger from "./hooks/useStrictModeLogger";
